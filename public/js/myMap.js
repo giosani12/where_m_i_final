@@ -61,7 +61,7 @@ function onMapClick(e) {
 	var olc = olc8 + '-' + olc10 + '-' + olc11;
 
 	if (Cookies.get("email"))
-		var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc + '<button onclick="openNav2(/*coordinate*/)">Crea un Video da qua</button>';
+		var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc + '<button onclick="openNav(2)">Aggiungi un video relativo a questa posizione</button>';
 	else
 		var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc;
 	var area = OpenLocationCode.decode(olc8);
@@ -83,10 +83,17 @@ mymap.locate({setView: true, watch:true, enableHighAccuracy: true, maximumAge:20
 
 
 function onLocationFound(e) {
+	var coords = parseLatLng(e.latlng.toString());
+	var olc8 = OpenLocationCode.encode(coords[0], coords[1], 8);
+        var olc10 = OpenLocationCode.encode(coords[0], coords[1], 10);
+        var olc11 = OpenLocationCode.encode(coords[0], coords[1], 11);
+	var olc = olc8 + '-' + olc10 + '-' + olc11;
+
 	if (Cookies.get("email"))
-		var customPopup = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li>Posizione:'  + parseLatLng(e.latlng.toString())[0] +  parseLatLng(e.latlng.toString())[1] +'</li><li><a href="#">Raggiungi riferimento più vicino</a></li><li><input input type="file" id="file" class="button" accept="video/*"><button id="button">Upload</button></li></ul></div>';
+		var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc + '<button onclick="openNav(2)">Aggiungi un Video relativo a questo luogo</button>';
 	else
-		var customPopup = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li>Posizione:'  + parseLatLng(e.latlng.toString())[0] +  parseLatLng(e.latlng.toString())[1]  +'</li><li><a href="#">Raggiungi riferimento più vicino</a></li></ul></div>';
+		var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc;
+
 	Cookies.set("location", e.latlng);
 	var radius = e.accuracy;
 
@@ -110,11 +117,11 @@ function onLocationError(e) {
 mymap.on('locationerror', onLocationError);
 
 var markersLayer = new L.LayerGroup();	//layer contain searched elements
-	
+
 mymap.addLayer(markersLayer);
 
 var controlSearch = new L.Control.Search({
-	position:'topright',		
+	position:'topright',
 	layer: markersLayer,
 	initial: false,
 	zoom: 12,
@@ -124,22 +131,25 @@ var controlSearch = new L.Control.Search({
 mymap.addControl( controlSearch );
 
 if (Cookies.get("email"))
-	var customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li><li><input input type="file" id="file" class="button" accept="video/*"><button id="button">Upload</button></li></ul></div>';
+	var customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li><li><input input type="file" id="file" class="button" accept="video"><button id="button">Upload</button></li></ul></div>';
 else
 		var customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li></ul></div>';
-	
-	
+
 //populate map with markers from sample data
+
 async function printMarkers(data) {
-	console.log(data);
-	for (i in data) {
-		var title = data[i]["name"],	//value searched
-			loc = data[i]["location"]; //position found
-		var codeArea = OpenLocationCode.decode(loc);
-		var marker = new L.Marker(new L.latLng([codeArea.latitudeCenter, codeArea.longitudeCenter]), {title: title} );//se property searched
-		marker.bindPopup( title + customPopup2);
-		markersLayer.addLayer(marker);
-	}
+	console.log(data["data"]);
+	/*
+	if (data["data"]!="[]") {
+		for (i in data) {
+			var title = data[i]["name"],	//value searched
+				loc = data[i]["location"]; //position found
+			var codeArea = OpenLocationCode.decode(loc);
+			var marker = new L.Marker(new L.latLng([codeArea.latitudeCenter, codeArea.longitudeCenter]), {title: title} );//se property searched
+			marker.bindPopup( title + customPopup2);
+			markersLayer.addLayer(marker);
+		}
+	}*/
 }
 
 

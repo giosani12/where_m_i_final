@@ -1,13 +1,15 @@
+var postData;
 async function createMd() {
-	var postData = await $('myForm').serializeJSON(); //data from input
+	postData = await $('myForm').serializeJSON(); //data from input
 
         postData["loccoords"] = getCookie("olc");
         postData["loccoordsPrecise"] = getCookie("olcPrecise");
 
         var md = getCookie("olc")+':'+postData["purpose"]+':'+postData["language"]+':';
 
+	/*
         var i;
-        let arr = JSON.parse(postData["content"]);
+        let arr = JSON.stringify(postData["content"]);
 	console.log(arr);
         for (i=0; i<arr.lenght(); i++ )
         {
@@ -15,7 +17,9 @@ async function createMd() {
                         md += arr[i]+'-';
                 else
                         md += arr[i];
-        }
+        }*/
+
+	md = md + postData["content"];
 
         if(postData["audience"] != "gen")
         {
@@ -36,7 +40,6 @@ async function createMd() {
 async function StampValue() {
 	var url = "https://site181950.tw.cs.unibo.it/api/videos";
 	var method = "POST";
-	var postData = getCookie("postData");
 	postData["user"] = getCookie("email");
 	postData["url"] = "https://www.youtube.com/watch?v=" + getCookie("videoURL");
 

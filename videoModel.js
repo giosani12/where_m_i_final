@@ -29,7 +29,7 @@ var videoSchema = mongoose.Schema({
     audience: String,
     detail: String,
     language: String,
-    vote: String,
+    //vote: String,
 });
 // Export Video model
 var Video = module.exports = mongoose.model('video', videoSchema);

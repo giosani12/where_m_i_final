@@ -31,7 +31,7 @@ exports.new = function (req, res) {
     video.audience = req.body.audience;
     video.detail = req.body.detail;
     video.language = req.body.language;
-    video.vote = req.body.vote;
+    //video.vote = req.body.vote;
     video.markModified("user");
     video.markModified("url");
     video.markModified("locname");
@@ -42,7 +42,7 @@ exports.new = function (req, res) {
     video.markModified("audience");
     video.markModified("detail");
     video.markModified("language");
-    video.markModified("vote");
+    //video.markModified("vote");
     video.save(function (err) {
         if (err)
              res.json(err);

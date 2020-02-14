@@ -14,7 +14,6 @@ function stopRecordingCallback() {
     video.muted = false;
     video.volume = 1;
     video.src = URL.createObjectURL(recorder.getBlob());
-    
     recorder.camera.stop();
 }
 
@@ -60,7 +59,14 @@ document.getElementById('btn-download').onclick = function() {
     recorder.save("prova.webm");
     document.getElementById('btn-start-recording').disabled = false;
 };
-/* Open when someone clicks on the span element */
+
+function openNav(num) {
+	if(num < 3)
+	  document.getElementById("myNav"+num).style.width = "100%";
+	else
+	  document.getElementById("myNav"+num).style.height = "15%";
+}
+/* Open when someone clicks on the span element 
 function openNav() {
   document.getElementById("myNav").style.width = "100%";
   console.log("openNav()");
@@ -72,11 +78,12 @@ function openNav2() {
 }
 
 /* Close when someone clicks on the "x" symbol inside the overlay */
-function closeNav() {
-  document.getElementById("myNav").style.width = "0%";
-}
 
-function closeNav2() {
-  document.getElementById("myNav2").style.width = "0%";
+
+function closeNav(num) {
+	if(num<3)
+		document.getElementById("myNav"+num).style.width = "0%";
+	else
+		document.getElementById("myNav"+num).style.height = "0%";
 }
 
