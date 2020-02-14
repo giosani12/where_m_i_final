@@ -27,7 +27,7 @@ var data = [
 */
 
 var xmlhttp = new XMLHttpRequest();
-var url = "http://localhost:8000/api/places";
+var url = "https://site181950.tw.cs.unibo.it/api/places";
 xmlhttp.onreadystatechange = async function() {
     if (this.readyState == 4 && this.status == 200) {
         var data = JSON.parse(this.responseText);
@@ -37,7 +37,7 @@ xmlhttp.onreadystatechange = async function() {
 xmlhttp.open("GET", url, true);
 xmlhttp.send();
 
-	
+
 
 var mymap = L.map("mapid", {
 		center: [51.505, -0.09],
@@ -73,7 +73,8 @@ function onMapClick(e) {
 	rectangleStat
 		.setBounds(bounds)
 		.addTo(mymap);
-	Cookies.set("olc", olc);	
+	Cookies.set("olc", olc);
+	Cookies.set("olcPrecise", olc11);
 }
 
 mymap.on('click', onMapClick);
@@ -86,7 +87,7 @@ function onLocationFound(e) {
 		var customPopup = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li>Posizione:'  + parseLatLng(e.latlng.toString())[0] +  parseLatLng(e.latlng.toString())[1] +'</li><li><a href="#">Raggiungi riferimento più vicino</a></li><li><input input type="file" id="file" class="button" accept="video/*"><button id="button">Upload</button></li></ul></div>';
 	else
 		var customPopup = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li>Posizione:'  + parseLatLng(e.latlng.toString())[0] +  parseLatLng(e.latlng.toString())[1]  +'</li><li><a href="#">Raggiungi riferimento più vicino</a></li></ul></div>';
-	Cookies.set("location", e.latlng); 
+	Cookies.set("location", e.latlng);
 	var radius = e.accuracy;
 
 	markerStat

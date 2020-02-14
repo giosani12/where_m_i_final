@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
 var videoController = require('./videoController');
 // Video routes
 router.route('/videos')
-    .get(videoController.entryPoint) 
+    .get(videoController.entryPoint)
     .post(videoController.new); // inserimento video
 router.route('/videos/:stringaricerca') //implementare stringa metadati per ricerca video
     .get(videoController.view)

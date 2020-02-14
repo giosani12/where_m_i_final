@@ -1,35 +1,45 @@
-async function StampValue() {
-	var url = "http://localhost:8000/api/videos";
-	var method = "POST";
-	var postData = await $('#myForm').serializeJSON(); //dati del video in json
-	postData["user"] = getCookie("email");
-	postData["url"] = "https://www.youtube.com/watch?v=" + getCookie("videoURL");
-	postData["locname"] = "Pizza Minore";
-	postData["loccoords"] = getCookie("olc");
-	
-	var md = getCookie("olc")+':'+postData["purpose"]+':'+postData["language"]+':';
-	
-	var i;
-	let arr = postData["content"];
-	for (i=0; i<arr.lenght(); i++ )
-	{
-		if(i != arr.lenght()-1)
-			md += arr[i]+'-';
-		else
-			md += arr[i];
-	}
+async function createMd() {
+	var postData = await $('myForm').serializeJSON(); //data from input
 
-	if(postData["audience"] != "gen")
-	{
-		md = md + ':' + postData["audience"];
-	}
+        postData["loccoords"] = getCookie("olc");
+        postData["loccoordsPrecise"] = getCookie("olcPrecise");
 
-        if(postData["detail"] != "0")
+        var md = getCookie("olc")+':'+postData["purpose"]+':'+postData["language"]+':';
+
+        var i;
+        let arr = JSON.parse(postData["content"]);
+	console.log(arr);
+        for (i=0; i<arr.lenght(); i++ )
+        {
+                if(i != arr.lenght()-1)
+                        md += arr[i]+'-';
+                else
+                        md += arr[i];
+        }
+
+        if(postData["audience"] != "gen")
+        {
+                md = md + ':' + postData["audience"];
+        }
+
+	if(postData["detail"] != "0")
         {
                 md = md + ':P' + postData["detail"];
         }
-	
-	Cookies.set("metadata", md);
+
+        Cookies.set("metadata", md);
+	Cookies.set("postData", postData);
+
+}
+
+
+async function StampValue() {
+	var url = "https://site181950.tw.cs.unibo.it/api/videos";
+	var method = "POST";
+	var postData = getCookie("postData");
+	postData["user"] = getCookie("email");
+	postData["url"] = "https://www.youtube.com/watch?v=" + getCookie("videoURL");
+
 	console.log(JSON.stringify(postData));
 	// You REALLY want shouldBeAsync = true.
 	// Otherwise, it'll block ALL execution waiting for server response.
@@ -63,9 +73,12 @@ async function StampValue() {
 	// Actually sends the request to the server.
 	request.send(JSON.stringify(postData));
 
-	function getCookie(name) {
-	  var value = "; " + document.cookie;
-	  var parts = value.split("; " + name + "=");
-	  if (parts.length == 2) return parts.pop().split(";").shift();
-	}
+
+}
+
+function getCookie(name) {
+	var value = "; " + document.cookie;
+	var parts = value.split("; " + name + "=");
+	if (parts.length == 2)
+		return parts.pop().split(";").shift();
 }

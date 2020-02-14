@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Where M I</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Where M I</title>
 
 	<!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
           integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
           crossorigin=""/>
 
@@ -55,10 +55,12 @@
 				<select name="url" style="display:none">
 					<option value="NULL" selected>o</option>
 				</select>
-				<select name="locname" style="display:none">
+				<input type="text" onfocus="this.value = ''; this.disabled = false" name="locname" disabled value="Inserisci punto d'interesse"/>
+				<br>
+				<select name="loccoords" style="display:none">
 					<option value="NULL" selected>o</option>
 				</select>
-				<select name="loccoords" style="display:none">
+				<select name="loccoordsPrecise" style="display:none">
 					<option value="NULL" selected>o</option>
 				</select>
 				Purpose: <select name="purpose" id="purp" class="custom-select">
@@ -111,28 +113,26 @@
 			</form>
 		</div>
 	<!-- jquery -->
-    <script
-            src="https://code.jquery.com/jquery-3.4.1.js"
-            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-            crossorigin="anonymous"></script>
-
-	<!-- leaflet -->
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-			integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-			crossorigin="">
+	<script src="https://code.jquery.com/jquery-3.4.1.js"
+	 integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+	 crossorigin="anonymous">
 	</script>
 
-	<!-- Compiled and minified JavaScript for Materialize
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-	-->    
+	<!-- leaflet -->
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	 integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+	 crossorigin="">
+	</script>
 	
+	<!-- jsCookie CDN -->    
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+
 	<!-- OLC CDN -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.3/openlocationcode.min.js"></script>
 
 	<!-- scripts -->
 	<script src="static/js/googleAuth.js"></script>
 	<script src="static/js/jQuery.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 	<script src="static/js/map.js"></script>
 	<script src="static/js/myMap.js"></script>
 	<script src="static/js/RecordRTC.js"></script>
@@ -141,8 +141,8 @@
 	<script src="static/js/upload_video.js"></script>
 
 	<script async defer src="https://apis.google.com/js/api.js"
-			onload="this.onload=function(){};handleClientLoad()"
-			onreadystatechange="if (this.readyState === 'complete') this.onload()">
+	 onload="this.onload=function(){};handleClientLoad()"
+	 onreadystatechange="if (this.readyState === 'complete') this.onload()">
 	</script>
 
 </body>

@@ -222,6 +222,7 @@ MediaUploader.prototype.upload = function() {
     }
   }.bind(this);
   xhr.onerror = this.onUploadError_.bind(this);
+  console.log(JSON.stringify(this.metadata));//TODO REMOVE!!
   xhr.send(JSON.stringify(this.metadata));
 };
 
@@ -464,8 +465,8 @@ UploadVideo.prototype.ready = function(accessToken) {
 UploadVideo.prototype.uploadFile = function(file) {
   var metadata = {
     snippet: {
-      title: "TEST"/*$('#title').val()*/,
-      description: "TEST_DESCRIPTION"/*$('#description').text()*/,
+      title: Cookies.get("metadata"),
+      description: Cookies.get("metadata"),
       tags: this.tags,
       categoryId: this.categoryId
     },
@@ -473,9 +474,6 @@ UploadVideo.prototype.uploadFile = function(file) {
       privacyStatus: "private"/*$('#privacy-status option:selected').text()*/
     }
   };
-
-    metadata["title"] = Cookies.get("metadata");
-    metadata["description"] = Cookies.get("metadata");
 
   var uploader = new MediaUploader({
     baseUrl: 'https://www.googleapis.com/upload/youtube/v3/videos',
@@ -538,8 +536,9 @@ UploadVideo.prototype.uploadFile = function(file) {
 
 UploadVideo.prototype.handleUploadClicked = function() {
   //now disable upload button
-	$('#button').attr('disabled', true);
-	console.log("handle upload clicked");
+  $('#button').attr('disabled', true);
+  createMd();
+  console.log("handle upload clicked");
   this.uploadFile($('#file').get(0).files[0]);
 };
 
