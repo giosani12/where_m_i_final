@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Index
+    </title>
+    </head>
+<body>
+<div style="background-image: url('01.jpg'); height:10vh; width:100vw" align="center">
+    <div class="user-view" style="font-size:1.9vh;">
+            <a href="/auth/google"><img src="google.ico" style="display:block; margin-left:auto; margin-right:auto; padding-top:2vh; width:5vh;"></a><b>Click on logo to login with google</b>
+        </div>
+</div>
+<div id="mapid" style="height: 90vh; width: 100vw; z-index:1">
+
+</div>
+
+<!-- jquery -->
+<script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+            crossorigin=""></script>
+<script>
+
+var mymap = L.map("mapid", {
+        center: [51.505, -0.09],
+        zoom: 13
+    });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(mymap);
+
+
+
+var marker = L.marker();
+var popup = L.popup();
+
+function onMapClick(e) {
+var customPopup = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li>Posizione:'  + e.latlng.toString() +'</li><li><a href="#">Aggiungi video</a></li><li><a href="#">Raggiungi riferimento più vicino</a></li><li><a href="#">Modifica posizione</a></li></ul></div>';
+
+    marker
+		.setLatLng(e.latlng)
+		.bindPopup(customPopup)
+		.addTo(mymap)
+}
+
+mymap.on('click', onMapClick);
+
+mymap.locate({setView: true, watch:true, enableHighAccuracy: true, maximumAge:10000, maxZoom: 16});
+
+function onLocationFound(e) {
+var customPopup = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li>Posizione:'  + e.latlng.toString() +'</li><li><a href="#">Aggiungi video</a></li><li><a href="#">Raggiungi riferimento più vicino</a></li><li><a href="#">Modifica posizione</a></li></ul></div>';
+
+
+    var radius = e.accuracy;
+
+    L.marker(e.latlng).addTo(mymap)
+        .bindPopup("You are within " + radius + " meters from this point. "+ customPopup).openPopup();
+
+    L.circle(e.latlng, radius).addTo(mymap);
+}
+
+mymap.on('locationfound', onLocationFound);
+
+function onLocationError(e) {
+    alert(e.message);
+}
+
+mymap.on('locationerror', onLocationError);
+</script>
+
+
+</body>
+</html>
