@@ -2,7 +2,7 @@ var GoogleAuth;
 var SCOPES = 'https://www.googleapis.com/auth/youtube';
 
 function handleClientLoad() {
-	console.log("inside handle");
+
 	// Load the API's client and auth2 modules.
 	// Call the initClient function after the modules load.
 	gapi.load('client:auth2', initClient);
@@ -17,9 +17,9 @@ function initClient() {
 	// Get API key and client ID from API Console.
 	// 'scope' field specifies spaaaaaace-delimited list of access scopes.
 	gapi.client.init({
-		'apiKey': 'AIzaSyDFy8SQwqIlgOnKq8gmjt5vBpJ_C3VsW-M',
+		'apiKey': 'AIzaSyA7yGFUELPysV0IxJb6g3jQgXjWc8q8TLI',//'AIzaSyDFy8SQwqIlgOnKq8gmjt5vBpJ_C3VsW-M',
 		'discoveryDocs': [discoveryUrl],
-		'clientId': '901602767451-peb56fj5v7psbcccjtt2bv8ffi3v368n.apps.googleusercontent.com',
+		'clientId': '798925527432-32vbin6ohfo4o9e0oevd41uhbitd83qe.apps.googleusercontent.com',//'901602767451-peb56fj5v7psbcccjtt2bv8ffi3v368n.apps.googleusercontent.com',
 		'scope': SCOPES
 	}).then(function () {
 		GoogleAuth = gapi.auth2.getAuthInstance();
@@ -212,6 +212,7 @@ MediaUploader.prototype.upload = function() {
   xhr.setRequestHeader('X-Upload-Content-Length', this.file.size);
   xhr.setRequestHeader('X-Upload-Content-Type', this.contentType);
 
+  console.log(JSON.stringify(this.metadata));
   xhr.onload = function(e) {
     if (e.target.status < 400) {
       var location = e.target.getResponseHeader('Location');
@@ -222,7 +223,6 @@ MediaUploader.prototype.upload = function() {
     }
   }.bind(this);
   xhr.onerror = this.onUploadError_.bind(this);
-  console.log(JSON.stringify(this.metadata));
   xhr.send(JSON.stringify(this.metadata));
 };
 
@@ -465,8 +465,8 @@ UploadVideo.prototype.ready = function(accessToken) {
 UploadVideo.prototype.uploadFile = function(file) {
   var metadata = {
     snippet: {
-      title: Cookies.get("locname"),
-      description: Cookies.get("metadata"),
+      title: "TEST",//Cookies.get("locname"),
+      description: "TEST_desc",//Cookies.get("metadata"),
       tags: this.tags,
       categoryId: this.categoryId
     },

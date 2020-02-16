@@ -18,19 +18,15 @@ function cMcallback(postData) {
 		.replace(/"/g,'')
 		.replace(/,/g,'')
 		.replace(']','');
-	md += cont.substring(0, md.lenght-1);
-	console.log(cont);
+	md = md + cont.substring(0, cont.lenght - 1);
+	console.log(cont.substring(0, cont.lenght - 1));
 	console.log(md);
 
         if(postData["audience"] != "gen")
-        {
                 md = md + ':' + postData["audience"];
-        }
 
 	if(postData["detail"] != "0")
-        {
                 md = md + ':P' + postData["detail"];
-        }
 
         Cookies.set("metadata", md);
 	//Cookies.set("postData", postData);
@@ -44,7 +40,6 @@ async function StampValue() {
 	postData["user"] = getCookie("email");
 	postData["url"] = "https://www.youtube.com/watch?v=" + getCookie("videoURL");
 
-	console.log(JSON.stringify(postData));
 	// You REALLY want shouldBeAsync = true.
 	// Otherwise, it'll block ALL execution waiting for server response.
 	var shouldBeAsync = true;
@@ -74,6 +69,8 @@ async function StampValue() {
 	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	// Or... request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
 	console.log(JSON.stringify(postData));
+	console.log(JSON.parse(postData));
+	console.log(postData);
 	// Actually sends the request to the server.
 	request.send(JSON.stringify(postData));
 }
