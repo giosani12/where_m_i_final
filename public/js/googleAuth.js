@@ -452,7 +452,7 @@ UploadVideo.prototype.ready = function(accessToken) {
     }.bind(this)
   });
   //now enable upload button
-	$('#button').on("click", this.handleUploadClicked.bind(this));
+	$('#uploadBtn').on("click", this.handleUploadClicked.bind(this));
 };
 
 /**
@@ -533,10 +533,10 @@ UploadVideo.prototype.uploadFile = function(file) {
   uploader.upload();
 };
 
-UploadVideo.prototype.handleUploadClicked = function() {
+UploadVideo.prototype.handleUploadClicked = async function() {
   //now disable upload button
   $('#button').attr('disabled', true);
-  createMd();
+  await createMd();
   console.log("handle upload clicked");
   this.uploadFile($('#file').get(0).files[0]);
 };

@@ -1,25 +1,37 @@
 var postData;
-async function createMd() {
-	postData = await $('myForm').serializeJSON(); //data from input
-
+function createMd() {
+	console.log($('myForm').text());
+	console.log(document.getElementById("cont"));
+	postData = $('myForm').serializeJSON(); //data from input
+	console.log(postData);
+	cMcallback();
+}
+function cMcallback() {
         postData["loccoords"] = getCookie("olc");
         postData["loccoordsPrecise"] = getCookie("olcPrecise");
 
         var md = getCookie("olc")+':'+postData["purpose"]+':'+postData["language"]+':';
 
-	/*
-        var i;
-        let arr = JSON.stringify(postData["content"]);
-	console.log(arr);
-        for (i=0; i<arr.lenght(); i++ )
+
+        var i=0;
+	var cont = JSON.stringify(postData["content"]);
+	console.log(cont);
+	cont.replace('[','');
+	cont.replace('"','');
+	cont.replace(',','');
+	cont.replace(']','');
+	md +=cont;
+	/*while ()
         {
                 if(i != arr.lenght()-1)
                         md += arr[i]+'-';
                 else
                         md += arr[i];
-        }*/
-
-	md = md + postData["content"];
+		
+		md += postData["content"][i] + "-";
+        	i++;
+	}*/
+	md = md.substring(0, md.lenght-1);
 
         if(postData["audience"] != "gen")
         {
@@ -84,4 +96,11 @@ function getCookie(name) {
 	var parts = value.split("; " + name + "=");
 	if (parts.length == 2)
 		return parts.pop().split(";").shift();
+}
+
+
+
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

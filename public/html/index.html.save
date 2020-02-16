@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,23 +71,23 @@
 			</select>
 			<br>
 			Content (selezione multipla con click + ctrl):<br> <select name="content[]" id="cont" class="custom-select" multiple>
-				<option value="none-" selected>nessuna</option>
-				<option value="art-">arte</option>
-				<option value="nat-">natura</option>
-				<option value="his-">storia</option>
-				<option value="flk-">folklore</option>
-				<option value="mod-">cultura moderna</option>
-				<option value="rel-">religione</option>
-				<option value="cui-">cucina e drink</option>
-				<option value="spo-">sport</option>
-				<option value="mus-">musica</option>
-				<option value="mov-">film</option>
-				<option value="fas-">moda</option>
-				<option value="shp-">shopping</option>
-				<option value="tec-">tecnologia</option>
-				<option value="pop-">cult. pop. e gossip</option>
-				<option value="prs-">esperienze personali</option>
-				<option value="oth-">altro</option>
+				<option value="none" selected>nessuna</option>
+				<option value="art">arte</option>
+				<option value="nat">natura</option>
+				<option value="his">storia</option>
+				<option value="flk">folklore</option>
+				<option value="mod">cultura moderna</option>
+				<option value="rel"> religione</option>
+				<option value="cui">cucina e drink</option>
+				<option value="spo">sport</option>
+				<option value="mus">musica</option>
+				<option value="mov">film</option>
+				<option value="fas">moda</option>
+				<option value="shp">shopping</option>
+				<option value="tec">tecnologia</option>
+				<option value="pop">cult. pop. e gossip</option>
+				<option value="prs">esperienze personali</option>
+				<option value="oth">altro</option>
 			</select>
 			<br>
 			Audience: <select name="audience" id="aud" class="custom-select">
@@ -105,7 +107,7 @@
 				<option value="esp">spagnolo</option>
 				<option value="fra">francese</option>
 			</select>
-			<input type="file" id="file" class="button" accept="video/*"><input id="uploadBtn" type="button" value="Upload">
+			<input type="file" id="file" class="button" accept="video/*"><input id="button" type="submit" value="Upload">
 
 			
 		</form>
