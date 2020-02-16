@@ -1,12 +1,11 @@
-var postData;
-function createMd() {
-	console.log($('myForm').text());
-	console.log(document.getElementById("cont"));
-	postData = $('myForm').serializeJSON(); //data from input
+var postData
+function createMd(callback) {
+	postData = $('#myForm').serializeJSON(); //data from input
 	console.log(postData);
-	cMcallback();
+	callback(postData);
 }
-function cMcallback() {
+function cMcallback(postData) {
+	Cookies.set("locname", postData["locname"]);
         postData["loccoords"] = getCookie("olc");
         postData["loccoordsPrecise"] = getCookie("olcPrecise");
 
@@ -15,23 +14,13 @@ function cMcallback() {
 
         var i=0;
 	var cont = JSON.stringify(postData["content"]);
+	cont = cont.replace('[','')
+		.replace(/"/g,'')
+		.replace(/,/g,'')
+		.replace(']','');
+	md += cont.substring(0, md.lenght-1);
 	console.log(cont);
-	cont.replace('[','');
-	cont.replace('"','');
-	cont.replace(',','');
-	cont.replace(']','');
-	md +=cont;
-	/*while ()
-        {
-                if(i != arr.lenght()-1)
-                        md += arr[i]+'-';
-                else
-                        md += arr[i];
-		
-		md += postData["content"][i] + "-";
-        	i++;
-	}*/
-	md = md.substring(0, md.lenght-1);
+	console.log(md);
 
         if(postData["audience"] != "gen")
         {
@@ -44,7 +33,7 @@ function cMcallback() {
         }
 
         Cookies.set("metadata", md);
-	Cookies.set("postData", postData);
+	//Cookies.set("postData", postData);
 
 }
 
@@ -84,11 +73,9 @@ async function StampValue() {
 
 	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	// Or... request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-
+	console.log(JSON.stringify(postData));
 	// Actually sends the request to the server.
 	request.send(JSON.stringify(postData));
-
-
 }
 
 function getCookie(name) {
@@ -99,8 +86,3 @@ function getCookie(name) {
 }
 
 
-
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}

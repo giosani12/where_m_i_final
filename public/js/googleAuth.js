@@ -222,6 +222,7 @@ MediaUploader.prototype.upload = function() {
     }
   }.bind(this);
   xhr.onerror = this.onUploadError_.bind(this);
+  console.log(JSON.stringify(this.metadata));
   xhr.send(JSON.stringify(this.metadata));
 };
 
@@ -464,7 +465,7 @@ UploadVideo.prototype.ready = function(accessToken) {
 UploadVideo.prototype.uploadFile = function(file) {
   var metadata = {
     snippet: {
-      title: Cookies.get("locName"),
+      title: Cookies.get("locname"),
       description: Cookies.get("metadata"),
       tags: this.tags,
       categoryId: this.categoryId
@@ -533,11 +534,10 @@ UploadVideo.prototype.uploadFile = function(file) {
   uploader.upload();
 };
 
-UploadVideo.prototype.handleUploadClicked = async function() {
+UploadVideo.prototype.handleUploadClicked = function() {
   //now disable upload button
   $('#button').attr('disabled', true);
-  await createMd();
-  console.log("handle upload clicked");
+  createMd(cMcallback);
   this.uploadFile($('#file').get(0).files[0]);
 };
 
@@ -565,7 +565,7 @@ UploadVideo.prototype.pollForVideoStatus = function() {
 		        break;
 		      // The video was successfully transcoded and is available.
 		      case 'processed':
-		        $('#player').append(response.items[0].player.embedHtml);
+		        //$('#player').append(response.items[0].player.embedHtml);
 		        //$('#post-upload-status').append('<li>Final status.</li>');
 				console.log("video was uploaded succesfully somehow");
 		        break;
