@@ -428,6 +428,7 @@ var UploadVideo = function() {
 
 
 UploadVideo.prototype.ready = function(accessToken) {
+  mythis = this;
   this.accessToken = accessToken;
   this.gapi = gapi;
   this.authenticated = true;
@@ -453,7 +454,7 @@ UploadVideo.prototype.ready = function(accessToken) {
     }.bind(this)
   });
   //now enable upload button
-	$('#uploadBtn').on("click", this.handleUploadClicked.bind(this));
+  $('#uploadBtn').on("click", this.handleUploadClicked.bind(this));
 };
 
 /**
@@ -533,10 +534,14 @@ UploadVideo.prototype.uploadFile = function(file) {
 };
 
 UploadVideo.prototype.handleUploadClicked = function() {
-  //now disable upload button
-  $('#button').attr('disabled', true);
-  createMd(cMcallback);
-  this.uploadFile($('#file').get(0).files[0]);
+  if ($('#cont').get(0).selectedIndex == -1)
+    alert('Scegliere almeno un argomento!');
+  else {
+    //now disable upload button
+    $('#uploadBtn').attr('disabled', true);
+    createMd(cMcallback);
+    this.uploadFile($('#file').get(0).files[0]);
+  }
 };
 
 UploadVideo.prototype.pollForVideoStatus = function() {

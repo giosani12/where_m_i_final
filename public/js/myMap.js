@@ -25,16 +25,19 @@ var data = [
 		{"loc":[41.239190,13.032145], "title":"white"}
 	];
 */
-
+var placesData;
 var xmlhttp = new XMLHttpRequest();
 var url = "https://site181950.tw.cs.unibo.it/api/places";
-xmlhttp.onreadystatechange = async function() {
-    if (this.readyState == 4 && this.status == 200) {
-        var data = JSON.parse(this.responseText);
-	await printMarkers(data);
-    }
+xmlhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		console.log("places retrived suddenly");
+	}
 };
 xmlhttp.open("GET", url, true);
+xmlhttp.onload = function () {
+	placesData = JSON.parse(this.responseText);
+	printMarkers(placesData);
+}
 xmlhttp.send();
 
 
@@ -102,10 +105,9 @@ function onLocationFound(e) {
 			.addTo(mymap)
 			.bindPopup("You are within " + radius + " meters from this point. "+ customPopup).openPopup();
 	circleStat
-			.setLatLang(e.latlng)
+			.setLatLng(e.latlng)
 			.setRadius(radius)
 			.addTo(mymap);
-	
 }
 
 mymap.on('locationfound', onLocationFound);
@@ -137,19 +139,15 @@ else
 
 //populate map with markers from sample data
 
-async function printMarkers(data) {
-	console.log(data["data"]);
-	/*
-	if (data["data"]!="[]") {
-		for (i in data) {
-			var title = data[i]["name"],	//value searched
-				loc = data[i]["location"]; //position found
-			var codeArea = OpenLocationCode.decode(loc);
-			var marker = new L.Marker(new L.latLng([codeArea.latitudeCenter, codeArea.longitudeCenter]), {title: title} );//se property searched
-			marker.bindPopup( title + customPopup2);
-			markersLayer.addLayer(marker);
-		}
-	}*/
+function printMarkers(data) {
+	for (i in data["data"]) {
+		var title = data["data"][i]["name"],	//value searched
+		    loc = data["data"][i]["location"]; //position found
+		var codeArea = OpenLocationCode.decode(loc);
+		var marker = new L.Marker(new L.latLng(codeArea.latitudeCenter, codeArea.longitudeCenter), {title: title} );//se property searched
+		marker.bindPopup( title + customPopup2);
+		markersLayer.addLayer(marker);
+	}
 }
 
 

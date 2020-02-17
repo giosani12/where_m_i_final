@@ -22,7 +22,7 @@ exports.new = function (req, res) {
     console.log(req);
     var video = new Video();
     video.user = req.body.user ? req.body.user : video.user;
-    video.url = req.body.url ? req.body.url : video.url;
+    video.videoid = req.body.videoid ? req.body.videoid : video.videoid;
     video.locname = req.body.locname ? req.body.locname : video.locname;
     video.loccoords = req.body.loccoords ? req.body.loccoords : video.loccoords;
     video.loccoordsPrecise = req.body.loccoordsPrecise ? req.body.loccoordsPrecise : video.loccoordsPrecise;

@@ -61,10 +61,17 @@ document.getElementById('btn-download').onclick = function() {
 };
 
 function openNav(num) {
-	if(num < 3)
-	  document.getElementById("myNav"+num).style.width = "100%";
+	if(num == 1)
+		document.getElementById("myNav"+num).style.width = "100%";
+	else if (num == 3)
+		document.getElementById("myNav"+num).style.height = "15%";
 	else
-	  document.getElementById("myNav"+num).style.height = "15%";
+		if (Cookies.get("email")) {
+			document.getElementById("myNav"+num).style.width = "100%";
+			//send xhr to /api/places and put res.data in autocomplete
+		}
+		else
+			alert("Per caricare un video devi essere loggato");
 }
 /* Open when someone clicks on the span element 
 function openNav() {
