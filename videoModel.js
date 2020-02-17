@@ -5,7 +5,7 @@ var videoSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    url: {
+    videoid: {
 	type: String,
 	required: true
     },

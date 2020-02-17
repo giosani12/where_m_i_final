@@ -6,7 +6,7 @@ function createMd(callback) {
 }
 function cMcallback(postData) {
 	Cookies.set("locname", postData["locname"]);
-        postData["loccoords"] = getCookie("olc");
+        postData["loccoords"] = Cookies.get("olc");
         postData["loccoordsPrecise"] = getCookie("olcPrecise");
 
         var md = getCookie("olc")+':'+postData["purpose"]+':'+postData["language"]+':';
@@ -18,8 +18,8 @@ function cMcallback(postData) {
 		.replace(/"/g,'')
 		.replace(/,/g,'')
 		.replace(']','');
-	md = md + cont.substring(0, cont.lenght - 1);
-	console.log(cont.substring(0, cont.lenght - 1));
+	md = md + cont.slice(0, -1);
+	postData["content"] = cont.slice(0, -1);
 	console.log(md);
 
         if(postData["audience"] != "gen")
@@ -28,7 +28,7 @@ function cMcallback(postData) {
 	if(postData["detail"] != "0")
                 md = md + ':P' + postData["detail"];
 
-        Cookies.set("metadata", md);
+        Cookies.set("Videometadata", md);
 	//Cookies.set("postData", postData);
 
 }
@@ -38,7 +38,7 @@ async function StampValue() {
 	var url = "https://site181950.tw.cs.unibo.it/api/videos";
 	var method = "POST";
 	postData["user"] = getCookie("email");
-	postData["url"] = "https://www.youtube.com/watch?v=" + getCookie("videoURL");
+	postData["videoid"] = getCookie("videoID");
 
 	// You REALLY want shouldBeAsync = true.
 	// Otherwise, it'll block ALL execution waiting for server response.
@@ -69,8 +69,6 @@ async function StampValue() {
 	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	// Or... request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
 	console.log(JSON.stringify(postData));
-	console.log(JSON.parse(postData));
-	console.log(postData);
 	// Actually sends the request to the server.
 	request.send(JSON.stringify(postData));
 }

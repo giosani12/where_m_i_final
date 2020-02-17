@@ -33,7 +33,7 @@ exports.new = function (req, res) {
     video.language = req.body.language;
     //video.vote = req.body.vote;
     video.markModified("user");
-    video.markModified("url");
+    video.markModified("videoid");
     video.markModified("locname");
     video.markModified("loccoords");
     video.markModified("loccoordsPrecise");

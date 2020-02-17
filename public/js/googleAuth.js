@@ -465,8 +465,8 @@ UploadVideo.prototype.ready = function(accessToken) {
 UploadVideo.prototype.uploadFile = function(file) {
   var metadata = {
     snippet: {
-      title: "TEST",//Cookies.get("locname"),
-      description: "TEST_desc",//Cookies.get("metadata"),
+      title: Cookies.get("locname"),
+      description: Cookies.get("Videometadata"),
       tags: this.tags,
       categoryId: this.categoryId
     },
@@ -496,7 +496,6 @@ UploadVideo.prototype.uploadFile = function(file) {
       }
     }.bind(this),
     onProgress: function(data) {
-      /*
       var currentTime = Date.now();
       var bytesUploaded = data.loaded;
       var totalBytes = data.total;
@@ -504,7 +503,6 @@ UploadVideo.prototype.uploadFile = function(file) {
       var bytesPerSecond = bytesUploaded / ((currentTime - this.uploadStartTime) / 1000);
       var estimatedSecondsRemaining = (totalBytes - bytesUploaded) / bytesPerSecond;
       var percentageComplete = (bytesUploaded * 100) / totalBytes;
-      */
       /*$('#upload-progress').attr({
         value: bytesUploaded,
         max: totalBytes
@@ -520,7 +518,7 @@ UploadVideo.prototype.uploadFile = function(file) {
     onComplete: function(data) {
       var uploadResponse = JSON.parse(data);
       this.videoId = uploadResponse.id;
-      Cookies.set("videoURL", this.videoId);
+      Cookies.set("videoID", this.videoId);
       StampValue();
 /*
       $('#video-id').text(this.videoId);
