@@ -6160,3 +6160,4 @@ function WebAssemblyRecorder(stream, config) {
 if (typeof RecordRTC !== 'undefined') {
     RecordRTC.WebAssemblyRecorder = WebAssemblyRecorder;
 }
+

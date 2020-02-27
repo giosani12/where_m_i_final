@@ -138,16 +138,30 @@ li {
 	clear:both;
 }
 
-.btnDiv{
+.btnDivTop{
 	position:absolute;
-	left:38%;
+	left: 10%;
 	padding: 1vh 2vh;
 	pointer-events: auto;
 }
 
-.btnStyle{
-	padding:2vh 4vh;
+.btnDivBot{
+	position:absolute;
+	pointer-events: auto;
+	margin-bottom: 6vh;
 }
+
+.btnStyleBot{
+	padding: 1vh 1vh;
+	width: 32.5vw ;
+	height: 10vh;
+}
+
+.btnStyleTop{
+        padding: 1vh 1vh;
+	width: 24vw ;
+	height: 10vh;
+}     
 
 /* The Overlay (background) */
 .overlayLeft {
@@ -288,4 +302,54 @@ select {
     padding-bottom: 2px;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.text-center {text-align:center;}
+
+.success-box {
+  margin:50px 0;
+  padding:10px 10px;
+  border:1px solid #eee;
+  background:#f9f9f9;
+}
+
+.success-box > div {
+  vertical-align:top;
+  display:inline-block;
+  color:#888;
+}
+
+
+
+/* Rating Star Widgets Style */
+.rating-stars ul {
+  list-style-type:none;
+  padding:0;
+  
+  -moz-user-select:none;
+  -webkit-user-select:none;
+}
+.rating-stars ul > li.star {
+  display:inline-block;
+  
+}
+
+/* Idle State of the stars */
+.rating-stars ul > li.star > i.fa {
+  font-size:2.5em; /* Change the size of the stars */
+  color:#ccc; /* Color on idle state */
+}
+
+/* Hover state of the stars */
+.rating-stars ul > li.star.hover > i.fa {
+  color:#FFCC36;
+}
+
+/* Selected state of the stars */
+.rating-stars ul > li.star.selected > i.fa {
+  color:#FF912C;
+}
+
+.wmiBtns {
+  disabled: true;
 }

@@ -94,3 +94,4 @@ function closeNav(num) {
 		document.getElementById("myNav"+num).style.height = "0%";
 }
 
+

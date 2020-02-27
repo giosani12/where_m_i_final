@@ -17,9 +17,9 @@ function initClient() {
 	// Get API key and client ID from API Console.
 	// 'scope' field specifies spaaaaaace-delimited list of access scopes.
 	gapi.client.init({
-		'apiKey': 'AIzaSyA7yGFUELPysV0IxJb6g3jQgXjWc8q8TLI',//'AIzaSyDFy8SQwqIlgOnKq8gmjt5vBpJ_C3VsW-M',
+		'apiKey': /*'AIzaSyA7yGFUELPysV0IxJb6g3jQgXjWc8q8TLI',*/'AIzaSyDFy8SQwqIlgOnKq8gmjt5vBpJ_C3VsW-M',
 		'discoveryDocs': [discoveryUrl],
-		'clientId': '798925527432-32vbin6ohfo4o9e0oevd41uhbitd83qe.apps.googleusercontent.com',//'901602767451-peb56fj5v7psbcccjtt2bv8ffi3v368n.apps.googleusercontent.com',
+		'clientId': /*'798925527432-32vbin6ohfo4o9e0oevd41uhbitd83qe.apps.googleusercontent.com',*/'901602767451-peb56fj5v7psbcccjtt2bv8ffi3v368n.apps.googleusercontent.com',
 		'scope': SCOPES
 	}).then(function () {
 		GoogleAuth = gapi.auth2.getAuthInstance();
@@ -67,12 +67,10 @@ function setSigninStatus(isSignedIn) {
 		signinCallback(authResponse);
 		$('#sign-in-or-out-button').prop('value','Sign out');
 		$('#revoke-access-button').css('display', 'inline-block');
-		$('#auth-status').html('You are currently signed in and have granted ' + 'access to this app.');
 	} else {
 		Cookies.set("email","false");
 		$('#sign-in-or-out-button').prop('value', 'Sign In/Authorize');
 		$('#revoke-access-button').css('display', 'none');
-		$('#auth-status').html('You have not authorized this app or you are ' + 'signed out.');
 	}
 }
 
@@ -454,6 +452,7 @@ UploadVideo.prototype.ready = function(accessToken) {
     }.bind(this)
   });
   //now enable upload button
+  console.log("abilito il bottone");
   $('#uploadBtn').on("click", this.handleUploadClicked.bind(this));
 };
 
@@ -534,6 +533,7 @@ UploadVideo.prototype.uploadFile = function(file) {
 };
 
 UploadVideo.prototype.handleUploadClicked = function() {
+  console.log("Hai cliccato il bottone");
   if ($('#cont').get(0).selectedIndex == -1)
     alert('Scegliere almeno un argomento!');
   else {
@@ -582,3 +582,4 @@ UploadVideo.prototype.pollForVideoStatus = function() {
     }.bind(this)
   });
 };
+

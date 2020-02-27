@@ -4,6 +4,7 @@ function createMd(callback) {
 	console.log(postData);
 	callback(postData);
 }
+
 function cMcallback(postData) {
 	Cookies.set("locname", postData["locname"]);
         postData["loccoords"] = Cookies.get("olc");
@@ -59,5 +60,6 @@ async function StampValue() {
 	// Actually sends the request to the server.
 	request.send(JSON.stringify(postData));
 }
+
 
 

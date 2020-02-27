@@ -1,30 +1,5 @@
+Cookies.set("initialized", "false");
 /*
-var data = [
-		{"loc":[44.493682,11.343084], "title":"Piazza Maggiore"},
-		{"loc":[44.500292,11.34533],  "title":"Piazza Otto Agosto"},
-		{"loc":[44.511565,11.347049], "title":"Piazza dell'Unità"},
-		{"loc":[44.492395,11.311526], "title":"Piazza della Pace"},
-		{"loc":[44.491774,11.345335], "title":"Piazza Minghetti"},
-		{"loc":[44.491151,11.34394],  "title":"Piazza Cavour"},
-		{"loc":[44.522863,11.341208], "title":"Campo Rom"},	
-		{"loc":[44.536086,11.371284], "title":"Carcere Dozza"},
-		{"loc":[41.329190,13.192145], "title":"Darkgray"},
-		{"loc":[41.379290,13.122545], "title":"dodgerblue"},
-		{"loc":[41.409190,13.362145], "title":"gray"},
-		{"loc":[41.794008,12.583884], "title":"green"},	
-		{"loc":[41.805008,12.982884], "title":"greenyellow"},
-		{"loc":[41.536175,13.273590], "title":"red"},
-		{"loc":[41.516175,13.373590], "title":"rosybrown"},
-		{"loc":[41.506175,13.273590], "title":"royalblue"},
-		{"loc":[41.836175,13.673590], "title":"salmon"},
-		{"loc":[41.796175,13.570590], "title":"seagreen"},
-		{"loc":[41.436175,13.573590], "title":"seashell"},
-		{"loc":[41.336175,13.973590], "title":"silver"},
-		{"loc":[41.236175,13.273590], "title":"skyblue"},
-		{"loc":[41.546175,13.473590], "title":"yellow"},
-		{"loc":[41.239190,13.032145], "title":"white"}
-	];
-*/
 var placesData;
 var xmlhttp = new XMLHttpRequest();
 var url = "https://site181950.tw.cs.unibo.it/api/places";
@@ -39,11 +14,11 @@ xmlhttp.onload = function () {
 	printMarkers(placesData);
 }
 xmlhttp.send();
-
+*/
 
 
 var mymap = L.map("mapid", {
-		center: [51.505, -0.09],
+		center: [44.49, 11.34],
 		zoom: 13
 });
 
@@ -55,19 +30,37 @@ var markerStat = L.marker();
 var rectangleStat = L.rectangle(boundsGlobal);
 var circleStat = L.circle();
 var popup = L.popup();
+/*
+var signInOutBtn = L.easyButton({
+	id: 'sign-in-or-out-button'}).addTo(mymap);
+var revokeAccessBtn = L.easyButton({
+	id: 'revoke-access-button'}).addTo(mymap);
+*/
+var recordVideoBtn;
+var wmiBtn;
+var wmiNextBtn;
+var wmiPrevBtn;
+var wmiStopBtn;
+var wmiMoreBtn;
+var wmiContinueBtn;
+
+
+
 
 function onMapClick(e) {
 	var coords = parseLatLng(e.latlng.toString());
-	var olc8 = OpenLocationCode.encode(coords[0], coords[1], 8);
-	var olc10 = OpenLocationCode.encode(coords[0], coords[1], 10);
+	var olc4 = OpenLocationCode.encode(coords[0], coords[1], 4);
+	var olc6 = OpenLocationCode.encode(coords[0], coords[1], 6);
 	var olc11 = OpenLocationCode.encode(coords[0], coords[1], 11);
-	var olc = olc8 + '-' + olc10 + '-' + olc11;
-
-	if (Cookies.get("email"))
-		var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc + '<button onclick="openNav(2)">Aggiungi un video relativo a questa posizione</button>';
+	var olc = olc4 + ':' + olc6 + ':' + olc11;
+	var customPopup;
+	console.log("olc4", olc4.slice(0, -1));
+	retrieveVideos(olc4.slice(0, -1));
+	if (Cookies.get("email") != "false")
+		customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc + '<button onclick="openNav(2)">Aggiungi un video relativo a questa posizione</button>';
 	else
-		var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc;
-	var area = OpenLocationCode.decode(olc8);
+		customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc;
+	var area = OpenLocationCode.decode(olc11);
 	var bounds = [[area.latitudeLo, area.longitudeLo], [area.latitudeHi, area.longitudeHi]];
 	markerClick
 		.setLatLng(e.latlng)
@@ -82,17 +75,22 @@ function onMapClick(e) {
 
 mymap.on('click', onMapClick);
 
-mymap.locate({setView: true, watch:true, enableHighAccuracy: true, maximumAge:20000, maxZoom: 16});
+
+if (navigator.geolocation) {
+    mymap.locate({setView: false, watch:true, enableHighAccuracy: true, maximumAge:20000, maxZoom: 16});
+}
+
+
 
 
 function onLocationFound(e) {
 	var coords = parseLatLng(e.latlng.toString());
-	var olc8 = OpenLocationCode.encode(coords[0], coords[1], 8);
-        var olc10 = OpenLocationCode.encode(coords[0], coords[1], 10);
+	var olc4 = OpenLocationCode.encode(coords[0], coords[1], 4);
+        var olc6 = OpenLocationCode.encode(coords[0], coords[1], 6);
         var olc11 = OpenLocationCode.encode(coords[0], coords[1], 11);
-	var olc = olc8 + '-' + olc10 + '-' + olc11;
+	var olc = olc4 + ':' + olc10 + ':' + olc11;
 
-	if (Cookies.get("email"))
+	if (Cookies.get("email") != "false")
 		var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc + '<button onclick="openNav(2)">Aggiungi un Video relativo a questo luogo</button>';
 	else
 		var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc;
@@ -103,21 +101,26 @@ function onLocationFound(e) {
 	markerStat
 			.setLatLng(e.latlng)
 			.addTo(mymap)
-			.bindPopup("You are within " + radius + " meters from this point. "+ customPopup).openPopup();
+			.bindPopup("You are within " + radius + " meters from this point. "+ customPopup, {autoPan : false}).openPopup();
 	circleStat
 			.setLatLng(e.latlng)
 			.setRadius(radius)
 			.addTo(mymap);
+	if (Cookies.get("initialized") == "false") {
+		makeRequest1(initWMI,coords);
+		Cookies.set("initialized", "true");
+		mymap.setView(coords);
+	}
 }
 
 mymap.on('locationfound', onLocationFound);
-
+/*
 function onLocationError(e) {
 	alert(e.message);
 }
 
 mymap.on('locationerror', onLocationError);
-
+*/
 var markersLayer = new L.LayerGroup();	//layer contain searched elements
 
 mymap.addLayer(markersLayer);
@@ -131,11 +134,11 @@ var controlSearch = new L.Control.Search({
 });
 
 mymap.addControl( controlSearch );
-
-if (Cookies.get("email"))
-	var customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li><li><input input type="file" id="file" class="button" accept="video"><button id="button">Upload</button></li></ul></div>';
+var customPopup2;
+if (Cookies.get("email") != "false")
+	customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li><li><input input type="file" id="file" class="button" accept="video"><button id="button">Upload</button></li></ul></div>';
 else
-		var customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li></ul></div>';
+	customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li></ul></div>';
 
 //populate map with markers from sample data
 
@@ -150,6 +153,25 @@ function printMarkers(data) {
 	}
 }
 
+function printMarkers2(data) {
+	for (i in data) {
+		var title = data[i]["snippet"]["title"];	//value searched
+		var loc = parseLocPrecise(data[i]["snippet"]["description"]); //position found
+		if (loc.includes("+")) {
+			var codeArea = OpenLocationCode.decode(loc);
+			var marker = new L.Marker(new L.latLng(codeArea.latitudeCenter, codeArea.longitudeCenter), {title: title} );//se property searched
+			marker.bindPopup( title + customPopup2);
+			markersLayer.addLayer(marker);
+		}
+		else
+			console.log("invalid olc");
+	}
+}
+
+function parseLocPrecise(desc) {
+	console.log(desc);
+	return desc.slice(desc.indexOf(":", desc.indexOf(":")+1)+1, desc.indexOf(":", desc.indexOf(":", desc.indexOf(":")+1)+1));
+}
 
 
 function parseLatLng(ll){
@@ -161,3 +183,18 @@ function parseLatLng(ll){
 
 	return latl;
 }
+
+
+
+
+/*
+$('.btns').getContainer().addEventListener('mouseover', function () {
+        mymap.dragging.disable();
+    });
+
+    // Re-enable dragging when user's cursor leaves the element
+    $('.btns').getContainer().addEventListener('mouseout', function () {
+        mymap.dragging.enable();
+    });
+*/
+
