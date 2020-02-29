@@ -18,9 +18,22 @@ xmlhttp.send();
 
 
 var mymap = L.map("mapid", {
+		attributionControl: false,
 		center: [44.49, 11.34],
 		zoom: 13
 });
+
+L.control.attribution({position: 'topright'}).addTo(mymap);
+
+function videoData(vidId, olc, desc) {
+	this.id = vidId;
+	this.olc = olc;
+	this.desc = desc;
+}
+
+var marks = []; //lista marker
+
+var triples = []; //per ogni video tripla {id, olc, descrizione}
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(mymap);
 
@@ -37,12 +50,81 @@ var revokeAccessBtn = L.easyButton({
 	id: 'revoke-access-button'}).addTo(mymap);
 */
 var recordVideoBtn;
-var wmiBtn;
-var wmiNextBtn;
-var wmiPrevBtn;
-var wmiStopBtn;
-var wmiMoreBtn;
-var wmiContinueBtn;
+
+
+var wmiPrevBtn = L.easyButton(
+	'<strong>PREV</strong>',
+	function() {
+		alert('you just clicked the html entity;');
+	},
+	'PREV',
+	{
+		id: 'wmiPrevBtn',
+		position: 'bottomleft',
+	}
+).addTo(mymap);
+
+var wmiNextBtn = L.easyButton(
+	'<strong>NEXT</strong>',
+	function() {
+		alert('you just clicked the html entity;');
+	},
+	'NEXT',
+	{
+		id: 'wmiNextBtn',
+		position: 'bottomleft',
+	}
+).addTo(mymap);
+
+var wmiBtn = L.easyButton(
+	'<strong>WHERE M I</strong>',
+	function() {
+		alert('you just clicked the html entity;');
+	},
+	'WHERE M I',
+	{
+		id: 'wmiBtn',
+		position: 'bottomleft',
+	}
+).addTo(mymap);
+
+
+
+var wmiContinueBtn = L.easyButton(
+	'<strong>CONTINUE</strong>',
+	function() {
+		alert('you just clicked the html entity;');
+	},
+	'CONTINUE',
+	{
+		id: 'wmiContinueBtn',
+		position: 'bottomright',
+	}
+).addTo(mymap);
+
+var wmiMoreBtn = L.easyButton(
+	'<strong>MORE</strong>',
+	function() {
+		alert('you just clicked the html entity;');
+	},
+	'MORE',
+	{
+		id: 'wmiMoreBtn',
+		position: 'bottomright',
+	}
+).addTo(mymap);
+
+var wmiStopBtn = L.easyButton(
+	'<strong>STOP</strong>',
+	function() {
+		alert('you just clicked the html entity;');
+	},
+	'STOP',
+	{
+		id: 'wmiStopBtn',
+		position: 'bottomright',
+	}
+).addTo(mymap);
 
 
 
@@ -156,12 +238,18 @@ function printMarkers(data) {
 function printMarkers2(data) {
 	for (i in data) {
 		var title = data[i]["snippet"]["title"];	//value searched
-		var loc = parseLocPrecise(data[i]["snippet"]["description"]); //position found
+		var vidId = data[i]["id"]["videoId"]; //video id
+		var desc = data[i]["snippet"]["description"];
+		var loc = parseLocPrecise(desc); //position found
 		if (loc.includes("+")) {
-			var codeArea = OpenLocationCode.decode(loc);
-			var marker = new L.Marker(new L.latLng(codeArea.latitudeCenter, codeArea.longitudeCenter), {title: title} );//se property searched
-			marker.bindPopup( title + customPopup2);
-			markersLayer.addLayer(marker);
+			triples.push(new videoData(vidId, loc, desc));
+			if (!marks.includes(loc)) {
+				marks.push(loc);
+				var codeArea = OpenLocationCode.decode(loc);
+				var marker = new L.Marker(new L.latLng(codeArea.latitudeCenter, codeArea.longitudeCenter), {title: title} );//se property searched
+				marker.bindPopup( title + customPopup2);
+				markersLayer.addLayer(marker);
+			}
 		}
 		else
 			console.log("invalid olc");

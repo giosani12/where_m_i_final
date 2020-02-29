@@ -353,3 +353,34 @@ select {
 .wmiBtns {
   disabled: true;
 }
+
+#wmiBtn {
+  width: 32.5vw ;
+  height: 10vh;
+}
+
+#wmiMoreBtn {
+  width: 32.5vw ;
+  height: 10vh;
+}
+
+#wmiStopBtn {
+  width: 32.5vw ;
+  height: 10vh;
+}
+
+#wmiPrevBtn {
+  width: 32.5vw ;
+  height: 10vh;
+}
+
+#wmiNextBtn {
+  width: 32.5vw ;
+  height: 10vh;
+}
+
+#wmiContinueBtn {
+  width: 32.5vw ;
+  height: 10vh;
+}
+
