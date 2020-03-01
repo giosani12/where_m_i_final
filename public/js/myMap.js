@@ -137,7 +137,7 @@ function onMapClick(e) {
 	var olc = olc4 + ':' + olc6 + ':' + olc11;
 	var customPopup;
 	console.log("olc4", olc4.slice(0, -1));
-	retrieveVideos(olc4.slice(0, -1));
+	//retrieveVideos(olc4.slice(0, -1));
 	if (Cookies.get("email") != "false")
 		customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc + '<button onclick="openNav(2)">Aggiungi un video relativo a questa posizione</button>';
 	else
@@ -153,6 +153,12 @@ function onMapClick(e) {
 		.addTo(mymap);
 	Cookies.set("olc", olc);
 	Cookies.set("olcPrecise", olc11);
+	if (Cookies.get("initialized") == "false") {
+		//makeRequest1(initWMI,coords);
+		retrieveVideos(initWMI, coords,olc4.slice(0, -1));
+		Cookies.set("initialized", "true");
+		mymap.setView(coords);
+	}
 }
 
 mymap.on('click', onMapClick);

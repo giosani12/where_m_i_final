@@ -63,24 +63,31 @@ xmlhttp.send();
 
 
 function initWMI(curPos) {
-	var locations = new Array(placesData["data"].length);
-	console.log(locations);
-	console.log(placesData["data"]);
-	for (i in locations)
+	//var locations = new Array(triples.length);
+	//console.log(locations);
+	console.log(triples);
+	/*for (i in locations)
 		locations[i] = [];
-	for (j in placesData["data"]) {
-		var loc = placesData["data"][j]["location"]; //position found
-		var codeArea = OpenLocationCode.decode(loc);
+	for (j in marks) {
+		//var loc = triples[j]["olc"]; //position found
+		var codeArea = OpenLocationCode.decode(marks[j]);
 		locations.push([Math.pow(Math.abs(curPos[0] - codeArea.latitudeCenter), 2) + Math.pow(Math.abs(curPos[1] - codeArea.longitudeCenter), 2), j]);
 	}
-	console.log(locations);
-	locations.sort(sortFunction);
-	console.log(locations);
-	finalArray = new Array(locations.length/2);
-	console.log(videosData["data"][0]);
-	for (l in locations) {
-		finalArray[l] = videosData["data"].find( function(item) { return item["locname"] == placesData["data"][locations[l][1]]["name"] } );
-		finalArrayLenght++;
+	console.log(locations);*/
+	marks.sort(sortFunction);
+	console.log(marks);
+	finalArray = new Array(marks.length);
+	//console.log(videosData["data"][0]);
+	for (l in marks) {
+		finalArray[l] = [];
+		/*finalArray[l][0] = marks[l];
+		finalArray[l][1] = triples.filter(function filterFunction(triple) {
+				return triple["olc"] == marks[l];
+		});*/
+		finalArray[l].push(marks[l], triples.filter(function filter(triple) {
+				return triple["olc"] == marks[l];
+		}));
+		//finalArray[l] = triples.find( function(item) { return item["locname"] == placesData["data"][locations[l][1]]["name"] } );
 	}
 	console.log(finalArray);
 	$('#wmiBtn').attr('disabled', false);
@@ -95,7 +102,11 @@ function sortFunction(a, b) {
         return (a[0] < b[0]) ? -1 : 1;
     }
 }
-
+/*
+function filterFunction(elem, tocheck) {
+	return elem === tocheck;
+}
+*/
 
 $('#wmiBtn').on('click', function () {
 	$('#wmiNext').attr('disabled', false);
