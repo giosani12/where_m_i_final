@@ -16,16 +16,18 @@
 	<link rel="stylesheet" href="static/css/style.css"/>
 	<link rel="icon" href="static/images/favicon.ico"/>
 
+
 </head>
-<body>
+<body onload="initMap();">
 	<div id="mapid" style="height: 100vh; width: 100vw; z-index:0">
-		<div class="leaflet-top btnDivTop btns">
+		<!--<div class="leaflet-top btnDivTop btns">
 					<input type="button" id="sign-in-or-out-button" value="Sign In/Authorize" class="btnStyleTop">
 					<input type="button" id="revoke-access-button" value="Revoke access" class="btnStyleTop" style="display: none;">
 	
 					<a id="sign-in-or-out-button"></a>
 					<input type="button" id="initiate-record" value="Record Video" class="btnStyleTop" onclick="openNav(1)">
-		</div>
+					
+		</div> -->
 	</div>
 	<!-- The Recording Overlay -->
 	<div id="myNav1" class="overlayRight">
@@ -46,6 +48,7 @@
 		<!-- Button to close the overlay navigation -->
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav(2)">&times;</a>
 		<!-- Rating Stars Box -->
+		<!--
 		<div class="rating-stars text-center overlay-content">
 			<ul id="stars">
 				<li class="star" title="Poor" data-value="1">
@@ -65,6 +68,7 @@
 				</li>
 			</ul>
 		</div>
+		-->
 		<form id="myForm" class="overlay-content">
 			<select name="user" style="display:none">
 				<option value="NULL" selected>o</option>
@@ -135,10 +139,14 @@
 		</div>
 	</div>
 
+	<script async=false defer=false src="https://apis.google.com/js/api.js"></script>
+
+	<script async=false defer=false src="static/js/googleAuth.js"></script>
+
 		<!-- jquery -->
-	<script src="https://code.jquery.com/jquery-3.4.1.js"
-	 integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-	 crossorigin="anonymous">
+	<script async=false defer=false src="https://code.jquery.com/jquery-3.4.1.js"
+	 <!--integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+	 crossorigin="anonymous"> -->
 	</script>
 
 	<!-- leaflet -->
@@ -146,29 +154,25 @@
 	 integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
 	 crossorigin="">
 	</script>
-	<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+	<script async=false defer=false src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 	
 	<!-- jsCookie CDN -->    
-	<script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+	<script async=false defer=false src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
 	<!-- OLC CDN -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.3/openlocationcode.min.js"></script>
+	<script async=false defer=false src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.3/openlocationcode.min.js"></script>
 
 	<!-- scripts -->
-	<script src="static/js/googleAuth.js"></script>
-	<script src="static/js/requests.js"></script>
-	<script src="static/js/map.js"></script>
-	<script src="static/js/RecordRTC.js"></script>
-	<script src="static/js/mediaRecorder.js"></script>
-	<script src="static/js/jquery.serializejson.min.js"></script>
-	<script src="static/js/upload_video.js"></script>
-	<script src="static/js/jQuery.js"></script>
-	<script src="static/js/myMap.js"></script>
+	<script async=false defer=false src="static/js/map.js"></script>
+	<script async=false defer=false src="static/js/RecordRTC.js"></script>
+	<script async=false defer=false src="static/js/mediaRecorder.js"></script>
+	<script async=false defer=false src="static/js/jquery.serializejson.min.js"></script>
+	<script async=false defer=false src="static/js/upload_video.js"></script>
+	<script async=false defer=false src="static/js/jQuery.js"></script>
+	<script async=false defer=false src="static/js/myMap.js"></script>
+	<script async=false defer=false src="static/js/requests.js"></script>
 
-	<script async defer src="https://apis.google.com/js/api.js"
-	 onload="this.onload=function(){};handleClientLoad()"
-	 onreadystatechange="if (this.readyState === 'complete') this.onload()">
-	</script>
+
 
 </body>
 </html>

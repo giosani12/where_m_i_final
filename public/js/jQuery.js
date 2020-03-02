@@ -1,4 +1,4 @@
-$('.wmiBtns').attr('disabled', true);
+//$('.wmiBtns').attr('disabled', true);
 /*
 $(document).ready(function(){
   
@@ -40,24 +40,10 @@ $(document).ready(function(){
 });*/
 var finalArrayIndex = 0;
 var finalArray;
-var finalArrayLenght = 0;
+var videoIndexArr;
+//var finalArrayLenght = 0;
 let strStart = "https://www.youtube.com/embed/";
 let strEnd = "?rel=0&controls=0&showinfo=0&autoplay=1";
-/*
-var videosData;
-var xmlhttp = new XMLHttpRequest();
-var url = "https://site181950.tw.cs.unibo.it/api/videos";
-xmlhttp.onreadystatechange = function() {
-	if (this.readyState == 4 && this.status == 200) {
-		console.log("videos retrived suddenly");
-	}
-};
-xmlhttp.open("GET", url, true);
-xmlhttp.onload = function () {
-	videosData = JSON.parse(this.responseText);
-}
-xmlhttp.send();
-*/
 
 
 
@@ -66,17 +52,10 @@ function initWMI(curPos) {
 	//var locations = new Array(triples.length);
 	//console.log(locations);
 	console.log(triples);
-	/*for (i in locations)
-		locations[i] = [];
-	for (j in marks) {
-		//var loc = triples[j]["olc"]; //position found
-		var codeArea = OpenLocationCode.decode(marks[j]);
-		locations.push([Math.pow(Math.abs(curPos[0] - codeArea.latitudeCenter), 2) + Math.pow(Math.abs(curPos[1] - codeArea.longitudeCenter), 2), j]);
-	}
-	console.log(locations);*/
 	marks.sort(sortFunction);
 	console.log(marks);
 	finalArray = new Array(marks.length);
+	videoIndexArr = new Array(marks.lenght);
 	//console.log(videosData["data"][0]);
 	for (l in marks) {
 		finalArray[l] = [];
@@ -87,7 +66,7 @@ function initWMI(curPos) {
 		finalArray[l].push(marks[l], triples.filter(function filter(triple) {
 				return triple["olc"] == marks[l];
 		}));
-		//finalArray[l] = triples.find( function(item) { return item["locname"] == placesData["data"][locations[l][1]]["name"] } );
+		videoIndexArr[l] = 0;
 	}
 	console.log(finalArray);
 	$('#wmiBtn').attr('disabled', false);
@@ -107,7 +86,7 @@ function filterFunction(elem, tocheck) {
 	return elem === tocheck;
 }
 */
-
+/*
 $('#wmiBtn').on('click', function () {
 	$('#wmiNext').attr('disabled', false);
 	$('#wmiStop').attr('disabled', false);
@@ -150,11 +129,11 @@ $('#wmiContinue').on('click', function () {
 	$('#wmiStop').attr('disabled', false);
 	$('#myEmbedded').startVideo();
 });
-
+*/
 
 function setEmbedVideo() {
-	$('#myEmbedded').attr('src', strStart + finalArray[finalArrayIndex]["videoid"] + strEnd);
-	console.log(strStart + finalArray[finalArrayIndex]["videoid"] + strEnd);
+	$('#myEmbedded').attr('src', strStart + finalArray[finalArrayIndex][1][videoIndexArr[finalArrayIndex]]["id"] + strEnd);
+	console.log(strStart + finalArray[finalArrayIndex][1][videoIndexArr[finalArrayIndex]]["id"] + strEnd);
 	//set View to marker of finalArray[finalArrayIndex]["name"]
 }
 

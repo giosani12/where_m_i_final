@@ -1,4 +1,5 @@
 var postData
+
 function createMd(callback) {
 	postData = $('#myForm').serializeJSON(); //data from input
 	console.log(postData);

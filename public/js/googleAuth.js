@@ -30,16 +30,6 @@ function initClient() {
 		// Handle initial sign-in state. (Determine if user is already signed in.)
 		var user = GoogleAuth.currentUser.get();
 		setSigninStatus();
-
-		// Call handleAuthClick function when user clicks on
-		//      "Sign In/Authorize" button.
-		console.log("inside init");
-		$('#sign-in-or-out-button').click(function() {
-			handleAuthClick();
-		});
-		$('#revoke-access-button').click(function() {
-			revokeAccess();
-		});
 	});
 }
 
@@ -441,18 +431,10 @@ UploadVideo.prototype.ready = function(accessToken) {
         console.log(response.error.message);
       } else {
 		//now possible to upload
-/*
-        $('#channel-name').text(response.items[0].snippet.title);
-        $('#channel-thumbnail').attr('src', response.items[0].snippet.thumbnails.default.url);
-
-        $('.pre-sign-in').hide();
-        $('.post-sign-in').show();
-*/
       }
     }.bind(this)
   });
   //now enable upload button
-  console.log("abilito il bottone");
   $('#uploadBtn').on("click", this.handleUploadClicked.bind(this));
 };
 
@@ -496,6 +478,7 @@ UploadVideo.prototype.uploadFile = function(file) {
       }
     }.bind(this),
     onProgress: function(data) {
+	//REMOVING THIS CRASHED THINGS SOMEHOW, DON'T TOUCH!!
       var currentTime = Date.now();
       var bytesUploaded = data.loaded;
       var totalBytes = data.total;
