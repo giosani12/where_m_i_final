@@ -12,6 +12,8 @@ var popup;
 var markersLayer;
 var controlSearch;
 var customPopup2;
+var wmiBtn;
+var wmiMoreBtn;
 
 function videoData(vidId, olc, desc) {
 	this.id = vidId;
@@ -19,19 +21,39 @@ function videoData(vidId, olc, desc) {
 	this.desc = desc;
 }
 
+String.prototype.replaceAt=function(index, replacement) {
+	return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+}
+
+function stripZeros(olc, num) {
+	if (num == 4)
+		return olc
+			.substr(0, 9)
+			.replaceAt(4, "0000");
+	else
+		return olc
+			.substr(0, 9)
+			.replaceAt(6, "00");
+}
+
 
 function onMapClick(e) {
 	var coords = parseLatLng(e.latlng.toString());
-	var olc4 = OpenLocationCode.encode(coords[0], coords[1], 4);
-	var olc6 = OpenLocationCode.encode(coords[0], coords[1], 6);
-	var olc11 = OpenLocationCode.encode(coords[0], coords[1], 11);
-	var olc = olc4 + ':' + olc6 + ':' + olc11;
+	var olc10 = OpenLocationCode.encode(coords[0], coords[1], 10);
+	var olc4 = olc10;
+	olc4 = stripZeros(olc4, 4);
+        var olc6 = olc10;
+	olc6 = stripZeros(olc10, 2);
+	console.log("olc10", olc10);
+	console.log("olc6", olc6);
+	console.log("olc4", olc4);
+	var olc = olc4 + ':' + olc6 + ':' + olc10;
 	var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc;
 
 	if (Cookies.get("email") != "false")
 		customPopup = customPopup + '<button onclick="openNav(2)">Aggiungi un video relativo a questa posizione</button>';
 
-	var area = OpenLocationCode.decode(olc11);
+	var area = OpenLocationCode.decode(olc10);
 	var bounds = [[area.latitudeLo, area.longitudeLo], [area.latitudeHi, area.longitudeHi]];
 	markerClick
 		.setLatLng(e.latlng)
@@ -40,8 +62,8 @@ function onMapClick(e) {
 	rectangleStat
 		.setBounds(bounds)
 		.addTo(mymap);
-	//Cookies.set("olc", olc);
-	//Cookies.set("olcPrecise", olc11);
+	Cookies.set("olc", olc);
+	Cookies.set("olcPrecise", olc10);
 	/*if (Cookies.get("initialized") == "false") {
 		//makeRequest1(initWMI,coords);
 		retrieveVideos(initWMI, coords,olc4.slice(0, -1));
@@ -56,10 +78,12 @@ function onMapClick(e) {
 
 function onLocationFound(e) {
 	var coords = parseLatLng(e.latlng.toString());
-	var olc4 = OpenLocationCode.encode(coords[0], coords[1], 4);
-        var olc6 = OpenLocationCode.encode(coords[0], coords[1], 6);
-        var olc11 = OpenLocationCode.encode(coords[0], coords[1], 11);
-	var olc = olc4 + ':' + olc6 + ':' + olc11;
+	var olc10 = OpenLocationCode.encode(coords[0], coords[1], 10);
+	var olc4 = olc10;
+	olc4 = stripZeros(olc4, 4);
+        var olc6 = olc10;
+	olc6 = stripZeros(olc10, 2);
+	var olc = olc4 + ':' + olc6 + ':' + olc10;
 	var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc;
 	if (Cookies.get("email") != "false")
 		customPopup = customPopup + '<button onclick="openNav(2)">Aggiungi un Video relativo a questo luogo</button>';
@@ -77,7 +101,7 @@ function onLocationFound(e) {
 			.addTo(mymap);
 
 	Cookies.set("olc", olc);
-	Cookies.set("olcPrecise", olc11);
+	Cookies.set("olcPrecise", olc10);
 	if (Cookies.get("initialized") == "false") {
 		//makeRequest1(initWMI,coords);
 		Cookies.set("initialized", "true");
@@ -233,9 +257,15 @@ function initMap() {
 		function() {
 			finalArrayIndex--;
 			if (finalArrayIndex == finalArray.lenght - 2)
-				$('#wmiNextBtn').attr('disabled', 'disabled');
+				wmiNextBtn.enable();
+				//$('#wmiNextBtn').attr('disabled', 'disabled');
 			else if (finalArrayIndex == 0)
-				$('#wmiPrevBtn').attr('disabled', '');
+				wmiPrevBtn.disable();
+				//$('#wmiPrevBtn').attr('disabled', '');
+			if (Object.keys(finalArray[finalArrayIndex][1]).lenght > 1)
+				wmiMoreBtn.enable();
+			else
+				wmiMoreBtn.disable();
 			setEmbedVideo();
 		},
 		'Select previous place',
@@ -249,13 +279,19 @@ function initMap() {
 		'<strong>NEXT</strong>',
 		function() {
 			finalArrayIndex++;
-			console.log(finalArrayIndex,finalArrayLenght);
+			//console.log(finalArrayIndex,finalArrayLenght);
 			if (finalArrayIndex == finalArray.lenght-1) {
-				$('#wmiNextBtn').attr('disabled', '');
+				//$('#wmiNextBtn').attr('disabled', '');
+				wmiNextBtn.disable();
 				console.log("disabilito next");
 			}
 			else if (finalArrayIndex == 1)
-				$('#wmiPrevBtn').attr('disabled', 'disabled');
+				wmiPrevBtn.enable();
+				//$('#wmiPrevBtn').attr('disabled', 'disabled');
+			if (Object.keys(finalArray[finalArrayIndex][1]).lenght > 1)
+				wmiMoreBtn.enable();
+			else
+				wmiMoreBtn.disable();
 			setEmbedVideo();
 		},
 		'Select next place',
@@ -265,13 +301,18 @@ function initMap() {
 		}
 	).addTo(mymap);
 
-	var wmiBtn = L.easyButton(
+	wmiBtn = L.easyButton(
 		'<strong>WHERE M I</strong>',
 		function() {
-			$("#wmiNextBtn").attr('disabled','');
+			wmiNextBtn.enable();
+			console.log(Object.keys(finalArray[finalArrayIndex][1]).lenght);
+			if (Object.keys(finalArray[finalArrayIndex][1]).lenght > 1)
+				wmiMoreBtn.enable();
+			wmiStopBtn.enable();
+			/*$("#wmiNextBtn").attr('disabled','');
 			$("#wmiMoreBtn").attr('disabled','');
 			$("#wmiStopBtn").attr('disabled','');
-			setEmbedVideo();
+			*/setEmbedVideo();
 		},
 		'WHERE M I',
 		{
@@ -285,8 +326,10 @@ function initMap() {
 	var wmiContinueBtn = L.easyButton(
 		'<strong>CONTINUE</strong>',
 		function() {
-			$("#wmiContinueBtn").attr('disabled','disabled');
-			$("#wmiStopBtn").attr('disabled','');
+			wmiContinueBtn.disable();
+			wmiStopBtn.enable();
+			//$("#wmiContinueBtn").attr('disabled','disabled');
+			//$("#wmiStopBtn").attr('disabled','');
 			$('#myEmbedded').startVideo();
 		},
 		'Continue reproduction of clip',
@@ -296,10 +339,10 @@ function initMap() {
 		}
 	).addTo(mymap);
 
-	var wmiMoreBtn = L.easyButton(
+	wmiMoreBtn = L.easyButton(
 		'<strong>MORE</strong>',
 		function() {
-			videoIndexArr = (videoIndexArr + 1) % finalArray[finalArrayIndex][1].lenght;
+			videoIndexArr[finalArrayIndex] = (videoIndexArr[finalArrayIndex] + 1) % finalArray[finalArrayIndex][1].lenght;
 			setEmbedVideo();
 		},
 		'Start next clip for this location',
@@ -312,8 +355,10 @@ function initMap() {
 	var wmiStopBtn = L.easyButton(
 		'<strong>STOP</strong>',
 		function() {
-			$("#wmiContinueBtn").attr('disabled','');
-			$("#wmiStopBtn").attr('disabled','disabled');
+			wmiContinueBtn.enable();
+			wmiStopBtn.disable();
+			//$("#wmiContinueBtn").attr('disabled','');
+			//$("#wmiStopBtn").attr('disabled','disabled');
 			$('#myEmbedded').stopVideo();
 		},
 		'Stop reproduction of clip',
@@ -323,12 +368,12 @@ function initMap() {
 		}
 	).addTo(mymap);
 
-	$("#wmiBtn").attr('disabled','disabled');
-	$("#wmiNextBtn").attr('disabled','disabled');
-	$("#wmiPrevBtn").attr('disabled','disabled');
-	$("#wmiContinueBtn").attr('disabled','disabled');
-	$("#wmiMoreBtn").attr('disabled','disabled');
-	$("#wmiStopBtn").attr('disabled','disabled');
+	wmiBtn.disable();
+	wmiNextBtn.disable();
+	wmiPrevBtn.disable();
+	wmiContinueBtn.disable();
+	wmiMoreBtn.disable();
+	wmiStopBtn.disable();
 
 	mymap.on('click', onMapClick);
 

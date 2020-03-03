@@ -17,9 +17,9 @@ function initClient() {
 	// Get API key and client ID from API Console.
 	// 'scope' field specifies spaaaaaace-delimited list of access scopes.
 	gapi.client.init({
-		'apiKey': /*'AIzaSyA7yGFUELPysV0IxJb6g3jQgXjWc8q8TLI',*/'AIzaSyDFy8SQwqIlgOnKq8gmjt5vBpJ_C3VsW-M',
+		'apiKey': 'AIzaSyA7yGFUELPysV0IxJb6g3jQgXjWc8q8TLI',/*'AIzaSyDFy8SQwqIlgOnKq8gmjt5vBpJ_C3VsW-M',*/
 		'discoveryDocs': [discoveryUrl],
-		'clientId': /*'798925527432-32vbin6ohfo4o9e0oevd41uhbitd83qe.apps.googleusercontent.com',*/'901602767451-peb56fj5v7psbcccjtt2bv8ffi3v368n.apps.googleusercontent.com',
+		'clientId': '798925527432-32vbin6ohfo4o9e0oevd41uhbitd83qe.apps.googleusercontent.com',/*'901602767451-peb56fj5v7psbcccjtt2bv8ffi3v368n.apps.googleusercontent.com',*/
 		'scope': SCOPES
 	}).then(function () {
 		GoogleAuth = gapi.auth2.getAuthInstance();
@@ -453,7 +453,7 @@ UploadVideo.prototype.uploadFile = function(file) {
       categoryId: this.categoryId
     },
     status: {
-      privacyStatus: "unlisted"
+      privacyStatus: "public"
     }
   };
 
@@ -502,7 +502,7 @@ UploadVideo.prototype.uploadFile = function(file) {
       var uploadResponse = JSON.parse(data);
       this.videoId = uploadResponse.id;
       Cookies.set("videoID", this.videoId);
-      StampValue();
+      //StampValue();
 /*
       $('#video-id').text(this.videoId);
       $('.post-upload').show();
