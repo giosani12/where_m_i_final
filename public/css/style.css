@@ -354,12 +354,24 @@ select {
   disabled: true;
 }
 
-button[id*='easy-button-button'] {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+button[class*='easy-button-button'] {
 	margin: 0;
 	padding: 0;
+	display: inline-block;
+}
+
+button[class*='easy-button-button'] img{
+	width:80%;
+	height:80%;
+	vertical-align: middle;
+}
+
+button[class*='easy-button-button'] i{
+	vertical-align: middle;
+}
+
+.leaflet-container .leaflet-control-search {
+	float: right;
 }
 
 #wmiBtn {
@@ -395,10 +407,4 @@ button[id*='easy-button-button'] {
 #wmiLocate {
     left: 6px;
     top: 6px;
-}
-
-
-.leaflet-control.disabled{
-  opacity:.5;
-  pointer-events: none;
 }
