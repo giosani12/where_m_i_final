@@ -262,7 +262,7 @@ function initMap() {
 			else if (finalArrayIndex == 0)
 				wmiPrevBtn.disable();
 				//$('#wmiPrevBtn').attr('disabled', '');
-			if (Object.keys(finalArray[finalArrayIndex][1]).lenght > 1)
+			if (numVideos[finalArrayIndex] > 1)
 				wmiMoreBtn.enable();
 			else
 				wmiMoreBtn.disable();
@@ -288,7 +288,7 @@ function initMap() {
 			else if (finalArrayIndex == 1)
 				wmiPrevBtn.enable();
 				//$('#wmiPrevBtn').attr('disabled', 'disabled');
-			if (Object.keys(finalArray[finalArrayIndex][1]).lenght > 1)
+			if (numVideos[finalArrayIndex] > 1)
 				wmiMoreBtn.enable();
 			else
 				wmiMoreBtn.disable();
@@ -305,8 +305,8 @@ function initMap() {
 		'<strong>WHERE M I</strong>',
 		function() {
 			wmiNextBtn.enable();
-			console.log(Object.keys(finalArray[finalArrayIndex][1]).lenght);
-			if (Object.keys(finalArray[finalArrayIndex][1]).lenght > 1)
+			console.log(numVideos[finalArrayIndex]);
+			if (numVideos[finalArrayIndex] > 1)
 				wmiMoreBtn.enable();
 			wmiStopBtn.enable();
 			/*$("#wmiNextBtn").attr('disabled','');
@@ -342,7 +342,7 @@ function initMap() {
 	wmiMoreBtn = L.easyButton(
 		'<strong>MORE</strong>',
 		function() {
-			videoIndexArr[finalArrayIndex] = (videoIndexArr[finalArrayIndex] + 1) % finalArray[finalArrayIndex][1].lenght;
+			videoIndexArr[finalArrayIndex] = (videoIndexArr[finalArrayIndex] + 1) % numVideos[finalArrayIndex];
 			setEmbedVideo();
 		},
 		'Start next clip for this location',

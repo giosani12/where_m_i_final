@@ -1,7 +1,9 @@
 
+
 var finalArrayIndex = 0;
 var finalArray;
 var videoIndexArr;
+var numVideos;
 let strStart = "https://www.youtube.com/embed/";
 let strEnd = "?rel=0&controls=0&showinfo=0&autoplay=1";
 
@@ -16,6 +18,7 @@ function initWMI(curPos) {
 	console.log(marks);
 	finalArray = new Array(marks.length);
 	videoIndexArr = new Array(marks.lenght);
+	numVideos = new Array(marks.lenght)
 	//console.log(videosData["data"][0]);
 	for (l in marks) {
 		finalArray[l] = [];
@@ -23,9 +26,15 @@ function initWMI(curPos) {
 		finalArray[l][1] = triples.filter(function filterFunction(triple) {
 				return triple["olc"] == marks[l];
 		});*/
-		finalArray[l].push(marks[l], triples.filter(function filter(triple) {
-				return triple["olc"] == marks[l];
-		}));
+		var scnd = [];
+		scnd = triples.filter(function filter(triple) {
+			return triple["olc"] == marks[l];
+		});
+		numVideos[l]=0;
+		for (i in scnd)
+			numVideos[l]++;
+		//numVideos[l] = scnd.lenght;
+		finalArray[l].push(marks[l], scnd);
 		videoIndexArr[l] = 0;
 	}
 	console.log(finalArray);
