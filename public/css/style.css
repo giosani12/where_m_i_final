@@ -10,7 +10,7 @@ html, body, .container, #mapid {
 }
 
 .overlay {
-	position: relative; 
+	position: relative;
 	z-index: 9999;
 	bottom: 100vh;
 	width: 100%;
@@ -19,25 +19,25 @@ html, body, .container, #mapid {
 
 #topbar {
 	/*
-	background-image: url('/static/images/01.jpg'); 
+	background-image: url('/static/images/01.jpg');
 	*/
-	height:10vh; 
+	height:10vh;
 	width:100vw;
 	z-index: 2;
 }
 #hamburger {
-	display: inline; 
+	display: inline;
 	height:10vh;
 	z-index: 3;
 }
 
 #title {
-	
+
 }
 
 #mapid {
-	height: 90vh; 
-	width: 100vw; 
+	height: 90vh;
+	width: 100vw;
 	z-index: 1;
 }
 
@@ -78,7 +78,7 @@ h3 a:hover {
 	margin: 4px 0;
 	float:left;
 	width:600px;
-	height:400px;	
+	height:400px;
 }
 ul {
 	font-size:.85em;
@@ -107,7 +107,7 @@ li {
 	font-size:.85em;
 	padding:8px 8px 2px 8px;
 	background: #323b44;
-	border: 2px solid #737c85;		
+	border: 2px solid #737c85;
 	border-radius:.7em;
 	opacity: 0.9;
 	box-shadow:0 0 8px #5f7182;
@@ -128,7 +128,7 @@ li {
 	filter: alpha(opacity=80);
 	-khtml-opacity: .8;
 	-moz-opacity: .8;
-	opacity: .8;		
+	opacity: .8;
 }
 .contents {
 	float:left;
@@ -161,11 +161,11 @@ li {
         padding: 1vh 1vh;
 	width: 24vw ;
 	height: 10vh;
-}     
+}
 
 /* The Overlay (background) */
 .overlayLeft {
-  /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+  /* Height & width depends on how you want to reveal the overlay (see JS below) */
   height: 100%;
   width: 0;
   position: fixed; /* Stay in place */
@@ -179,7 +179,7 @@ li {
 }
 
 .overlayRight {
-  /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+  /* Height & width depends on how you want to reveal the overlay (see JS below) */
   height: 100%;
   width: 0;
   position: fixed; /* Stay in place */
@@ -193,7 +193,7 @@ li {
 }
 
 .overlayBottom {
-  /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+  /* Height & width depends on how you want to reveal the overlay (see JS below) */
   height: 0;
   width: 100%;
   position: fixed; /* Stay in place */
@@ -325,13 +325,13 @@ select {
 .rating-stars ul {
   list-style-type:none;
   padding:0;
-  
+
   -moz-user-select:none;
   -webkit-user-select:none;
 }
 .rating-stars ul > li.star {
   display:inline-block;
-  
+
 }
 
 /* Idle State of the stars */
@@ -352,6 +352,14 @@ select {
 
 .wmiBtns {
   disabled: true;
+}
+
+button[id*='easy-button-button'] {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	padding: 0;
 }
 
 #wmiBtn {
