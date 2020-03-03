@@ -42,13 +42,13 @@ function onMapClick(e) {
 		.addTo(mymap);
 	//Cookies.set("olc", olc);
 	//Cookies.set("olcPrecise", olc11);
-/*	if (Cookies.get("initialized") == "false") {
+	/*if (Cookies.get("initialized") == "false") {
 		//makeRequest1(initWMI,coords);
-		//retrieveVideos(initWMI, coords,olc4.slice(0, -1));
+		retrieveVideos(initWMI, coords,olc4.slice(0, -1));
 		Cookies.set("initialized", "true");
 		mymap.setView(coords);
-	}
-*/
+	}*/
+
 }
 
 
@@ -138,6 +138,12 @@ function parseLatLng(ll){
 }
 
 
+function locateMe() {
+	if (navigator.geolocation) {
+		mymap.locate({setView: false, watch:true, enableHighAccuracy: true, maximumAge:20000, maxZoom: 16});
+	}
+}
+
 
 function initMap() {
 
@@ -210,7 +216,16 @@ function initMap() {
 	).addTo(mymap);
 
 
-
+	var wmiLocate = L.easyButton(
+		'<i class="material-icons">gps_fixed</i>',
+		function() {
+			locateMe();
+		},
+		{
+			id: 'wmiLocate',
+			position: 'topleft'
+		}
+	).addTo(mymap);
 
 
 	var wmiPrevBtn = L.easyButton(
@@ -315,14 +330,7 @@ function initMap() {
 	$("#wmiMoreBtn").attr('disabled','disabled');
 	$("#wmiStopBtn").attr('disabled','disabled');
 
-
 	mymap.on('click', onMapClick);
-
-
-	if (navigator.geolocation) {
-		mymap.locate({setView: false, watch:true, enableHighAccuracy: true, maximumAge:20000, maxZoom: 16});
-	}
-
 
 	mymap.on('locationfound', onLocationFound);
 	/*

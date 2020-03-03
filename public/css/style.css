@@ -384,3 +384,7 @@ select {
   height: 10vh;
 }
 
+#wmiLocate {
+    left: 6px;
+    top: 6px;
+}

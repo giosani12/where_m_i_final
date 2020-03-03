@@ -38,9 +38,9 @@ function makeRequest2(callback, cbArg) {
 
 // query videos from yt
 
-function printMarkers2() {
+/*function printMarkers2() {
 	console.log("printmarkers2 wasn't loaded correctly");
-}
+}*/
 
 function retrieveVideos(callback, cbArg, olc4, nextpage) {
 	if (nextpage) {
