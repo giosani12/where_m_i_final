@@ -178,7 +178,7 @@ function initMap() {
 
 
 	var recordBtn = L.easyButton(
-		'<img src="static/images/camera.jpg" style="width:16px">',
+		'<img src="static/images/camera.jpg" style="height:30px;width:30px">',
 		function() {
 			openNav(1);
 		},
@@ -191,7 +191,7 @@ function initMap() {
 
 
 	var gLogBtn = L.easyButton(
-		'<img src="static/images/bigG.png" style="width:16px">',
+		'<img src="static/images/bigG.png" style="height:30px;width:30px">',
 		function() {
 			handleAuthClick();
 		},
@@ -204,7 +204,7 @@ function initMap() {
 
 
 	var wmiRevoke = L.easyButton(
-		'<img src="static/images/revoke.png" style="width:16px">',
+		'<img src="static/images/revoke.png" style="height:30px;width:30px">',
 		function() {
 			revokeAccess();
 		},
