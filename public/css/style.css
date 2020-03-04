@@ -1,8 +1,11 @@
-
 body {
 	padding: 0;
 	margin: 0;
+	background:#b5d0d0;
+	color:#285585;
+	font-family:Arial;
 }
+
 /*
 html, body, .container, #mapid {
 	height: 100%;
@@ -18,53 +21,45 @@ html, body, .container, #mapid {
 */
 
 #topbar {
-	/*
-	background-image: url('/static/images/01.jpg');
-	*/
+	//background-image: url('/static/images/01.jpg');
 	height:10vh;
 	width:100vw;
 	z-index: 2;
 }
+
+/*
 #hamburger {
 	display: inline;
 	height:10vh;
 	z-index: 3;
 }
+*/
 
-#title {
-
-}
-
+/*
 #mapid {
 	height: 90vh;
 	width: 100vw;
 	z-index: 1;
 }
-
-body {
-	background:#b5d0d0;
-	color:#285585;
-	font-family:Arial;
-}
-body#home {
-	background:url('static/images/back.png') no-repeat top left #b5d0d0;
-	margin-left:150px;
-}
+*/
 
 a {
 	color:#1978cf;
 }
+
 a:hover {
 	color:#fff;
 }
+
 h2, h3, h4 {
 	white-space:nowrap;
 	margin:1em 0 0 0;
 }
-h3 a,
-h3 a:hover {
+
+h3 a, h3 a:hover {
 	text-decoration:none;
 }
+
 #desc {
 	float: left;
 	margin-bottom: 1em;
@@ -72,6 +67,7 @@ h3 a:hover {
 	white-space:nowrap;
 	font-size:1em;
 }
+
 #map {
 	border-radius:.125em;
 	border:2px solid #1978cf;
@@ -80,14 +76,17 @@ h3 a:hover {
 	width:600px;
 	height:400px;
 }
+
 ul {
 	font-size:.85em;
 	margin:0;
 	padding:0;
 }
+
 li {
 	margin:0 0 2px 18px;
 }
+
 #post-it {
 	width:9em;
 	height:9em;
@@ -99,6 +98,7 @@ li {
 	box-shadow: 2px 2px 6px #999;
 	color:#666;
 }
+
 #copy {
 	position:fixed;
 	z-index:1000;
@@ -113,13 +113,16 @@ li {
 	box-shadow:0 0 8px #5f7182;
 	color:#eee
 }
+
 #copy a {
 	color:#ccc;
 	text-decoration:none
 }
+
 #copy a:hover {
 	color:#fff
 }
+
 #ribbon {
 	position: absolute;
 	top: 0;
@@ -130,10 +133,12 @@ li {
 	-moz-opacity: .8;
 	opacity: .8;
 }
+
 .contents {
 	float:left;
 	margin:0 2em 2em 0;
 }
+
 #comments {
 	clear:both;
 }
@@ -374,37 +379,18 @@ button[class*='easy-button-button'] i{
 	float: right;
 }
 
-#wmiBtn {
-  width: 32.5vw ;
-  height: 10vh;
+#wmiBtn, #wmiMoreBtn, #wmiStopBtn, #wmiPrevBtn, #wmiNextBtn, #wmiContinueBtn {
+	display: flex;
+	min-height: 20px;
+	min-width: 100px;
+	padding: 5px;
+	width: auto;
+	height: auto;
 }
-
-#wmiMoreBtn {
-  width: 32.5vw ;
-  height: 10vh;
-}
-
-#wmiStopBtn {
-  width: 32.5vw ;
-  height: 10vh;
-}
-
-#wmiPrevBtn {
-  width: 32.5vw ;
-  height: 10vh;
-}
-
-#wmiNextBtn {
-  width: 32.5vw ;
-  height: 10vh;
-}
-
-#wmiContinueBtn {
-  width: 32.5vw ;
-  height: 10vh;
+button[id*='wmi'] > span > p {
+	font-weight: bold;
+	vertical-align: middle;
 }
 
 #wmiLocate {
-    left: 6px;
-    top: 6px;
 }

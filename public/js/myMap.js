@@ -9,11 +9,13 @@ var markerStat;
 var rectangleStat;
 var circleStat;
 var popup;
+var customPopup;
 var markersLayer;
 var controlSearch;
 var customPopup2;
 var wmiBtn;
 var wmiMoreBtn;
+var markerArray = [];
 
 function videoData(vidId, olc, desc) {
 	this.id = vidId;
@@ -48,7 +50,7 @@ function onMapClick(e) {
 	console.log("olc6", olc6);
 	console.log("olc4", olc4);
 	var olc = olc4 + ':' + olc6 + ':' + olc10;
-	var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc;
+	customPopup = 'Olc: ' + olc;
 
 	if (Cookies.get("email") != "false")
 		customPopup = customPopup + '<button onclick="openNav(2)">Aggiungi un video relativo a questa posizione</button>';
@@ -84,9 +86,9 @@ function onLocationFound(e) {
         var olc6 = olc10;
 	olc6 = stripZeros(olc10, 2);
 	var olc = olc4 + ':' + olc6 + ':' + olc10;
-	var customPopup = 'Posizione:' + coords[0] + ', ' + coords[1] + ' olc: ' + olc;
+	var customPopup3 = 'Olc: ' + olc;
 	if (Cookies.get("email") != "false")
-		customPopup = customPopup + '<button onclick="openNav(2)">Aggiungi un Video relativo a questo luogo</button>';
+		customPopup3 = customPopup3 + '<button onclick="openNav(2)">Aggiungi un Video relativo a questo luogo</button>';
 
 	//Cookies.set("location", e.latlng);
 	var radius = e.accuracy;
@@ -94,7 +96,7 @@ function onLocationFound(e) {
 	markerStat
 			.setLatLng(e.latlng)
 			.addTo(mymap)
-			.bindPopup("You are within " + radius + " meters from this point. "+ customPopup, {autoPan : false}).openPopup();
+			.bindPopup("You are within " + radius + " meters from this point. "+ customPopup3, {autoPan : false}).openPopup();
 	circleStat
 			.setLatLng(e.latlng)
 			.setRadius(radius)
@@ -102,10 +104,12 @@ function onLocationFound(e) {
 
 	Cookies.set("olc", olc);
 	Cookies.set("olcPrecise", olc10);
+	Cookies.set("coords", coords);
 	if (Cookies.get("initialized") == "false") {
 		//makeRequest1(initWMI,coords);
 		Cookies.set("initialized", "true");
-		retrieveVideos(initWMI, coords,olc4.slice(0, -1));
+		//retrieveVideos(initWMI, coords,olc4.slice(0, -1));
+		retrieveVideos(olc4.slice(0, -1));
 		mymap.setView(coords);
 	}
 }
@@ -125,6 +129,7 @@ function printMarkers(data) {
 }
 
 function printMarkers2(data) {
+	var count = 0;
 	for (i in data) {
 		var title = data[i]["snippet"]["title"];	//value searched
 		var vidId = data[i]["id"]["videoId"]; //video id
@@ -134,10 +139,16 @@ function printMarkers2(data) {
 			triples.push(new videoData(vidId, loc, desc));
 			if (!marks.includes(loc)) {
 				marks.push(loc);
+				count++;
 				var codeArea = OpenLocationCode.decode(loc);
-				var marker = new L.Marker(new L.latLng(codeArea.latitudeCenter, codeArea.longitudeCenter), {title: title} );//se property searched
-				marker.bindPopup( title + customPopup2);
-				markersLayer.addLayer(marker);
+				markerArray.push(new L.Marker(
+					new L.latLng(codeArea.latitudeCenter, codeArea.longitudeCenter),
+					{title: title})
+				);
+				if (Cookies.get("email") != "false")
+					customPopup = '<button onclick="openNav(2, ' + i + ')">Aggiungi un Video relativo a questo luogo</button>';
+				markerArray[count-1].bindPopup("<h4>" + title + "</h4>" + customPopup);
+				markersLayer.addLayer(markerArray[count-1]);
 			}
 		}
 		else
@@ -170,6 +181,13 @@ function locateMe() {
 
 
 function initMap() {
+
+	// Inject YouTube API script
+	var tag = document.createElement('script');
+	tag.src = "//www.youtube.com/player_api";
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
 
 	handleClientLoad();
 
@@ -253,10 +271,10 @@ function initMap() {
 
 
 	var wmiPrevBtn = L.easyButton(
-		'<strong>PREV</strong>',
+		'<p>PREV</p>',
 		function() {
 			finalArrayIndex--;
-			if (finalArrayIndex == finalArray.lenght - 2)
+			if (finalArrayIndex == finalArrayLenght - 2)
 				wmiNextBtn.enable();
 				//$('#wmiNextBtn').attr('disabled', 'disabled');
 			else if (finalArrayIndex == 0)
@@ -276,11 +294,11 @@ function initMap() {
 	).addTo(mymap);
 
 	var wmiNextBtn = L.easyButton(
-		'<strong>NEXT</strong>',
+		'<p>NEXT</p>',
 		function() {
 			finalArrayIndex++;
-			//console.log(finalArrayIndex,finalArrayLenght);
-			if (finalArrayIndex == finalArray.lenght-1) {
+			console.log(finalArrayLenght);
+			if (finalArrayIndex == finalArrayLenght-1) {
 				//$('#wmiNextBtn').attr('disabled', '');
 				wmiNextBtn.disable();
 				console.log("disabilito next");
@@ -302,8 +320,9 @@ function initMap() {
 	).addTo(mymap);
 
 	wmiBtn = L.easyButton(
-		'<strong>WHERE M I</strong>',
+		'<p>WHERE M I</p>',
 		function() {
+			initWMI(Cookies.get("coords"));
 			wmiNextBtn.enable();
 			console.log(numVideos[finalArrayIndex]);
 			if (numVideos[finalArrayIndex] > 1)
@@ -312,7 +331,8 @@ function initMap() {
 			/*$("#wmiNextBtn").attr('disabled','');
 			$("#wmiMoreBtn").attr('disabled','');
 			$("#wmiStopBtn").attr('disabled','');
-			*/setEmbedVideo();
+			*/
+			setEmbedVideo();
 		},
 		'WHERE M I',
 		{
@@ -324,13 +344,14 @@ function initMap() {
 
 
 	var wmiContinueBtn = L.easyButton(
-		'<strong>CONTINUE</strong>',
+		'<p>CONTINUE</p>',
 		function() {
 			wmiContinueBtn.disable();
 			wmiStopBtn.enable();
 			//$("#wmiContinueBtn").attr('disabled','disabled');
 			//$("#wmiStopBtn").attr('disabled','');
-			$('#myEmbedded').startVideo();
+			//$('#myEmbedded').startVideo();
+			myPlayer.playVideo();
 		},
 		'Continue reproduction of clip',
 		{
@@ -340,7 +361,7 @@ function initMap() {
 	).addTo(mymap);
 
 	wmiMoreBtn = L.easyButton(
-		'<strong>MORE</strong>',
+		'<p>MORE</p>',
 		function() {
 			videoIndexArr[finalArrayIndex] = (videoIndexArr[finalArrayIndex] + 1) % numVideos[finalArrayIndex];
 			setEmbedVideo();
@@ -353,13 +374,13 @@ function initMap() {
 	).addTo(mymap);
 
 	var wmiStopBtn = L.easyButton(
-		'<strong>STOP</strong>',
+		'<p>STOP</p>',
 		function() {
 			wmiContinueBtn.enable();
 			wmiStopBtn.disable();
 			//$("#wmiContinueBtn").attr('disabled','');
 			//$("#wmiStopBtn").attr('disabled','disabled');
-			$('#myEmbedded').stopVideo();
+			myPlayer.pauseVideo(); //.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
 		},
 		'Stop reproduction of clip',
 		{
@@ -398,8 +419,9 @@ function initMap() {
 	});
 
 	mymap.addControl( controlSearch );
-	if (Cookies.get("email") != "false")
+	/*if (Cookies.get("email") != "false")
 		customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li><li><input input type="file" id="file" class="button" accept="video"><button id="button">Upload</button></li></ul></div>';
 	else
 		customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li></ul></div>';
+	*/
 }

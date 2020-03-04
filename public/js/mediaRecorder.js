@@ -60,18 +60,24 @@ document.getElementById('btn-download').onclick = function() {
     document.getElementById('btn-start-recording').disabled = false;
 };
 
-function openNav(num) {
-	if(num == 1)
+function openNav(num, isMarked) {
+	if (num == 1)
 		document.getElementById("myNav"+num).style.width = "100%";
-	else if (num == 3)
-		document.getElementById("myNav"+num).style.height = "15%";
-	else
+	else {
 		if (Cookies.get("email")) {
 			document.getElementById("myNav"+num).style.width = "100%";
 			//send xhr to /api/places and put res.data in autocomplete
 		}
 		else
 			alert("Per caricare un video devi essere loggato");
+	}
+	if(isMarked)
+	{
+		var index = locations[isMarked][1];
+		$('#locname').value = markerArray[isMarked].title;
+		$('#locname').attr('disabled','');
+		Cookies.set("olc", finalArray[index][0]);
+	}
 }
 /* Open when someone clicks on the span element 
 function openNav() {

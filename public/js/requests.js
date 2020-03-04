@@ -42,7 +42,7 @@ function makeRequest2(callback, cbArg) {
 	console.log("printmarkers2 wasn't loaded correctly");
 }*/
 
-function retrieveVideos(callback, cbArg, olc4, nextpage) {
+function retrieveVideos(/*callback, cbArg, */olc4, nextpage) {
 	if (nextpage) {
 		gapi.client.youtube.search.list({
 			"part": "snippet",
@@ -57,9 +57,10 @@ function retrieveVideos(callback, cbArg, olc4, nextpage) {
 				printMarkers2(response["result"]["items"]);
 				console.log("Response", response);
 				if ((resultsToRetrieve -= response["result"]["pageInfo"]["resultsPerPage"]) > 0)
-					retrieveVideos(callback, cbArg, olc4, response["result"]["nextPageToken"]);
+					retrieveVideos(/*callback, cbArg, */olc4, response["result"]["nextPageToken"]);
 				else
-					callback(cbArg);
+					wmiBtn.enable();
+				//	callback(cbArg);
 			},
 			function(err) { console.error("Execute error", err); });
 	}
@@ -77,9 +78,10 @@ function retrieveVideos(callback, cbArg, olc4, nextpage) {
 				console.log("Response", response);
 				printMarkers2(response["result"]["items"]);
 				if ((resultsToRetrieve -= response["result"]["pageInfo"]["resultsPerPage"]) > 0)
-					retrieveVideos(callback, cbArg, olc4, response["result"]["nextPageToken"]);
+					retrieveVideos(/*callback, cbArg, */olc4, response["result"]["nextPageToken"]);
 				else
-					callback(cbArg);
+					wmiBtn.enable();
+				//	callback(cbArg);
 			},
 			function(err) { console.error("Execute error", err); });
 	}
