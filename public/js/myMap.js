@@ -15,12 +15,13 @@ var controlSearch;
 var customPopup2;
 var wmiBtn;
 var wmiMoreBtn;
-var markerArray = [];
+var markers = [];
 
-function videoData(vidId, olc, desc) {
+function videoData(vidId, olc, desc, v) {
 	this.id = vidId;
 	this.olc = olc;
 	this.desc = desc;
+	this.valid = v
 }
 
 String.prototype.replaceAt=function(index, replacement) {
@@ -75,11 +76,16 @@ function onMapClick(e) {
 
 }
 
-
-
-
 function onLocationFound(e) {
 	var coords = parseLatLng(e.latlng.toString());
+	var bounds = mymap.getBounds()
+	var nw = stripZeros(OpenLocationCode.encode(bounds.getNorth(), bounds.getWest(), 10), 2);
+	var ne = stripZeros(OpenLocationCode.encode(bounds.getNorth(), bounds.getEast(), 10), 2);
+	var sw = stripZeros(OpenLocationCode.encode(bounds.getSouth(), bounds.getWest(), 10), 2);
+	var se = stripZeros(OpenLocationCode.encode(bounds.getSouth(), bounds.getEast(), 10), 2);
+	//to add ncenter, scenter
+	var nc = stripZeros(OpenLocationCode.encode(bounds.getNorth(), bounds.getCenter().lng, 10), 2);
+	var sc = stripZeros(OpenLocationCode.encode(bounds.getSouth(), bounds.getCenter().lng, 10), 2);
 	var olc10 = OpenLocationCode.encode(coords[0], coords[1], 10);
 	var olc4 = olc10;
 	olc4 = stripZeros(olc4, 4);
@@ -104,19 +110,21 @@ function onLocationFound(e) {
 
 	Cookies.set("olc", olc);
 	Cookies.set("olcPrecise", olc10);
-	Cookies.set("coords", coords);
+	Cookies.set("coordslat", coords[0]);
+	Cookies.set("coordslng", coords[1]);
 	if (Cookies.get("initialized") == "false") {
 		//makeRequest1(initWMI,coords);
 		Cookies.set("initialized", "true");
 		//retrieveVideos(initWMI, coords,olc4.slice(0, -1));
-		retrieveVideos(olc4.slice(0, -1));
+		console.log(olc4.slice(0, -1) + " | " + nw.slice(0, -1) + " | " + ne.slice(0, -1) + " | " + sw.slice(0, -1) + " | " + se.slice(0, -1));
+		retrieveVideos(olc4.slice(0, -1), nw.slice(0, -1), ne.slice(0, -1), sw.slice(0, -1), se.slice(0, -1), nc.slice(0, -1), sc.slice(0, -1));
 		mymap.setView(coords);
 	}
 }
 
 
-//populate map with markers from sample data
-
+//populate map with markers from db
+/*
 function printMarkers(data) {
 	for (i in data["data"]) {
 		var title = data["data"][i]["name"],	//value searched
@@ -127,6 +135,16 @@ function printMarkers(data) {
 		markersLayer.addLayer(marker);
 	}
 }
+*/
+
+var greyIcon = new L.Icon({
+  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 function printMarkers2(data) {
 	var count = 0;
@@ -135,20 +153,30 @@ function printMarkers2(data) {
 		var vidId = data[i]["id"]["videoId"]; //video id
 		var desc = data[i]["snippet"]["description"];
 		var loc = parseLocPrecise(desc); //position found
-		if (loc.includes("+")) {
-			triples.push(new videoData(vidId, loc, desc));
+		if (loc.includes("+") && (!loc.includes("-")) && (!loc.includes(":"))) {
+			console.log(loc);
+			triples.push(new videoData(vidId, loc, desc, true));
 			if (!marks.includes(loc)) {
-				marks.push(loc);
-				count++;
-				var codeArea = OpenLocationCode.decode(loc);
-				markerArray.push(new L.Marker(
-					new L.latLng(codeArea.latitudeCenter, codeArea.longitudeCenter),
-					{title: title})
-				);
-				if (Cookies.get("email") != "false")
-					customPopup = '<button onclick="openNav(2, ' + i + ')">Aggiungi un Video relativo a questo luogo</button>';
-				markerArray[count-1].bindPopup("<h4>" + title + "</h4>" + customPopup);
-				markersLayer.addLayer(markerArray[count-1]);
+				try {
+					marks.push(loc);
+					var codeArea = OpenLocationCode.decode(loc);
+					var newMarker = new L.Marker(
+						new L.latLng(codeArea.latitudeCenter, codeArea.longitudeCenter),
+						{icon: greyIcon, title: title});
+					markers.push([
+						newMarker,
+						title,
+						loc
+					]);
+					if (Cookies.get("email") != "false")
+						customPopup = '<button onclick="openNav(2, ' + count + ')">Aggiungi un Video relativo a questo luogo</button>';
+					newMarker.bindPopup("<h4>" + title + "</h4>" + customPopup);
+					markersLayer.addLayer(newMarker);
+					count++;
+				} catch (err) {
+			                console.log(err);
+        			}
+
 			}
 		}
 		else
@@ -157,8 +185,11 @@ function printMarkers2(data) {
 }
 
 function parseLocPrecise(desc) {
-	console.log(desc);
-	return desc.slice(desc.indexOf(":", desc.indexOf(":")+1)+1, desc.indexOf(":", desc.indexOf(":", desc.indexOf(":")+1)+1));
+	var ret = desc.slice(desc.indexOf(":", desc.indexOf(":")+1)+1, desc.indexOf(":", desc.indexOf(":", desc.indexOf(":")+1)+1));
+	if (ret.includes("+"))
+		return ret;
+	else
+		return desc.slice(desc.indexOf("-", desc.indexOf("-")+1)+1, desc.indexOf(":"/*, desc.indexOf("-", desc.indexOf("-")+1)+1)*/));
 }
 
 
@@ -322,7 +353,7 @@ function initMap() {
 	wmiBtn = L.easyButton(
 		'<p>WHERE M I</p>',
 		function() {
-			initWMI(Cookies.get("coords"));
+			initWMI([Cookies.get("coordslat"), Cookies.get("coordslng")]);
 			wmiNextBtn.enable();
 			console.log(numVideos[finalArrayIndex]);
 			if (numVideos[finalArrayIndex] > 1)
@@ -351,7 +382,7 @@ function initMap() {
 			//$("#wmiContinueBtn").attr('disabled','disabled');
 			//$("#wmiStopBtn").attr('disabled','');
 			//$('#myEmbedded').startVideo();
-			myPlayer.playVideo();
+			play() //myPlayer.playVideo();
 		},
 		'Continue reproduction of clip',
 		{
@@ -380,7 +411,7 @@ function initMap() {
 			wmiStopBtn.disable();
 			//$("#wmiContinueBtn").attr('disabled','');
 			//$("#wmiStopBtn").attr('disabled','disabled');
-			myPlayer.pauseVideo(); //.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
+			stop() //myPlayer.pauseVideo(); //.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
 		},
 		'Stop reproduction of clip',
 		{
@@ -410,15 +441,30 @@ function initMap() {
 
 	mymap.addLayer(markersLayer);
 
+	/* pulsante di ricerca */
 	controlSearch = new L.Control.Search({
 		position:'topright',
 		layer: markersLayer,
 		initial: false,
-		zoom: 12,
+		zoom: 20,
 		marker: false
 	});
 
+
 	mymap.addControl( controlSearch );
+
+	/*var filterBtn = L.easyButton(
+		'<i class="material-icons">filter_list</i>',
+		function() {
+			//TODO open popup
+			openNav(4);
+		},
+		'Filter markers',
+		{
+			id: 'filter',
+			position: 'topright',
+		}
+	).addTo(mymap);*/
 	/*if (Cookies.get("email") != "false")
 		customPopup2 = '<div data-role="popup" id="popupMenu" data-theme="b"><ul data-role="listview" data-inset="true" style="min-width:210px;"><li><a href="#">Raggiungi riferimento più vicino</a></li><li><input input type="file" id="file" class="button" accept="video"><button id="button">Upload</button></li></ul></div>';
 	else

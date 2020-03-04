@@ -42,13 +42,25 @@ function makeRequest2(callback, cbArg) {
 	console.log("printmarkers2 wasn't loaded correctly");
 }*/
 
-function retrieveVideos(/*callback, cbArg, */olc4, nextpage) {
+function retrieveVideos(/*callback, cbArg, */center, nw, ne, sw, se, nc, sc) {
+	retrieveVideo(center);
+	retrieveVideo(nw + " -" + center);
+	retrieveVideo(ne + " -" + center);
+	retrieveVideo(sw + " -" + center);
+	retrieveVideo(se + " -" + center);
+	retrieveVideo(nc + " -" + center);
+	retrieveVideo(sc + " -" + center);
+	wmiBtn.enable();
+}
+
+
+function retrieveVideo(/*callback, cbArg, */query, nextpage) {
 	if (nextpage) {
 		gapi.client.youtube.search.list({
 			"part": "snippet",
 			"maxResults": 50,
 			"pageToken": nextpage,
-			"q": olc4,
+			"q": query,
 			"type": "video",
 			"videoEmbeddable": "true"
 		})
@@ -57,9 +69,11 @@ function retrieveVideos(/*callback, cbArg, */olc4, nextpage) {
 				printMarkers2(response["result"]["items"]);
 				console.log("Response", response);
 				if ((resultsToRetrieve -= response["result"]["pageInfo"]["resultsPerPage"]) > 0)
-					retrieveVideos(/*callback, cbArg, */olc4, response["result"]["nextPageToken"]);
+					retrieveVideo(/*callback, cbArg, */query, response["result"]["nextPageToken"]);
 				else
-					wmiBtn.enable();
+					resultsToRetrieve = 0;
+				//else
+				//	wmiBtn.enable();
 				//	callback(cbArg);
 			},
 			function(err) { console.error("Execute error", err); });
@@ -68,7 +82,7 @@ function retrieveVideos(/*callback, cbArg, */olc4, nextpage) {
 		gapi.client.youtube.search.list({
 			"part": "snippet",
 			"maxResults": 50,
-			"q": olc4,
+			"q": query,
 			"type": "video",
 			"videoEmbeddable": "true"
 		})
@@ -78,9 +92,11 @@ function retrieveVideos(/*callback, cbArg, */olc4, nextpage) {
 				console.log("Response", response);
 				printMarkers2(response["result"]["items"]);
 				if ((resultsToRetrieve -= response["result"]["pageInfo"]["resultsPerPage"]) > 0)
-					retrieveVideos(/*callback, cbArg, */olc4, response["result"]["nextPageToken"]);
+					retrieveVideo(/*callback, cbArg, */query, response["result"]["nextPageToken"]);
 				else
-					wmiBtn.enable();
+					resultsToRetrieve = 0;
+				//else
+				//	wmiBtn.enable();
 				//	callback(cbArg);
 			},
 			function(err) { console.error("Execute error", err); });

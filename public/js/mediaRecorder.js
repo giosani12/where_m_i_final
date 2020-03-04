@@ -73,10 +73,14 @@ function openNav(num, isMarked) {
 	}
 	if(isMarked)
 	{
-		var index = locations[isMarked][1];
-		$('#locname').value = markerArray[isMarked].title;
-		$('#locname').attr('disabled','');
-		Cookies.set("olc", finalArray[index][0]);
+		console.log(markers[isMarked]);
+		$('#locname').attr('placeholder', markers[isMarked][1]);
+		//$('#locname').css('display', 'none');
+		var olc = markers[isMarked][2];
+		var olc4 = stripZeros(olc, 4);
+		var olc6 = stripZeros(olc, 2);
+		Cookies.set("olcPrecise", olc);
+		Cookies.set("olc", olc4 + ":" + olc6 + ":" + olc );
 	}
 }
 /* Open when someone clicks on the span element 
@@ -94,7 +98,7 @@ function openNav2() {
 
 
 function closeNav(num) {
-	if(num<3)
+	if(num<5)
 		document.getElementById("myNav"+num).style.width = "0%";
 	else
 		document.getElementById("myNav"+num).style.height = "0%";

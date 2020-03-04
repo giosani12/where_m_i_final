@@ -15,7 +15,7 @@ var videoController = require('./videoController');
 router.route('/videos')
     .get(videoController.entryPoint)
     .post(videoController.new); // inserimento video
-router.route('/videos/:stringaricerca') //implementare stringa metadati per ricerca video
+router.route('/videos/:stringaricerca') 
     .get(videoController.view)
 
 // Import place controller

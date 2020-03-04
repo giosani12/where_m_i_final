@@ -26,10 +26,8 @@
 		<!--<div class="leaflet-top btnDivTop btns">
 					<input type="button" id="sign-in-or-out-button" value="Sign In/Authorize" class="btnStyleTop">
 					<input type="button" id="revoke-access-button" value="Revoke access" class="btnStyleTop" style="display: none;">
-	
 					<a id="sign-in-or-out-button"></a>
 					<input type="button" id="initiate-record" value="Record Video" class="btnStyleTop" onclick="openNav(1)">
-					
 		</div> -->
 	</div>
 	<!-- The Recording Overlay -->
@@ -50,50 +48,38 @@
 	<div id="myNav2" class="overlayLeft">
 		<!-- Button to close the overlay navigation -->
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav(2)">&times;</a>
-		<!-- Rating Stars Box -->
-		<!--
-		<div class="rating-stars text-center overlay-content">
-			<ul id="stars">
-				<li class="star" title="Poor" data-value="1">
-					<i class="fa fa-star fa-fw"></i>
-				</li>
-				<li class="star" title="Fair" data-value="2">
-					<i class="fa fa-star fa-fw"></i>
-				</li>
-				<li class="star" title="Good" data-value="3">
-					<i class="fa fa-star fa-fw"></i>
-				</li>
-				<li class="star" title="Excellent" data-value="4">
-					<i class="fa fa-star fa-fw"></i>
-				</li>
-				<li class="star" title="WOW!!!" data-value="5">
-					<i class="fa fa-star fa-fw"></i>
-				</li>
-			</ul>
-		</div>
-		-->
+
 		<form id="myForm" class="overlay-content">
 			<select name="user" style="display:none">
 				<option value="NULL" selected>o</option>
 			</select>
+
 			<select name="videoid" style="display:none">
 				<option value="NULL" selected>o</option>
 			</select>
+
 			<input type="text" placeholder="Inserisci punto d'interesse" name="locname" value=""/>
 			<br>
+
 			<select name="loccoords" style="display:none">
 				<option value="NULL" selected>o</option>
 			</select>
+
 			<select name="loccoordsPrecise" style="display:none">
 				<option value="NULL" selected>o</option>
 			</select>
-			Purpose: <select name="purpose" id="purp" class="custom-select">
+
+			<span>Purpose:</span>
+			<select name="purpose" id="purp" class="custom-select">
 				<option value="what">what</option>
 				<option value="how">how</option>
 				<option value="why">why</option>
 			</select>
+
 			<br>
-			Content (selezione multipla con click + ctrl):<br> <select name="content[]" id="cont" class="custom-select" multiple>
+			<span>Content (selezione multipla con click + ctrl):</span>
+			<br>
+			<select name="content[]" id="cont" class="custom-select" multiple>
 				<option value="none-" style="display:none" selected disabled>nessuna</option>
 				<option value="art-">arte</option>
 				<option value="nat-">natura</option>
@@ -113,7 +99,8 @@
 				<option value="oth-">altro</option>
 			</select>
 			<br>
-			Audience: <select name="audience" id="aud" class="custom-select">
+			<span>Audience: </span>
+			<select name="audience" id="aud" class="custom-select">
 				<option value="gen" selected>pubblico generico</option>
 				<option value="pre">pre-scuola</option>
 				<option value="elm">scuola primaria</option>
@@ -121,26 +108,62 @@
 				<option value="scl">specialisti del settore</option>
 			</select>
 			<br>
-			Detail: <input id="num" type="number" name="detail" min="1" max="5" value="0"> <br>
+			<span>Detail: </span>
+			<input id="num" type="number" name="detail" min="1" max="5" value="0"> <br>
 			<br>
-			Lingua: <select name="language" id="lang" class="custom-select">
+			<span>Lingua: </span>
+			<select name="language" id="lang" class="custom-select">
 				<option value="ita">italiano</option>
 				<option value="eng">inglese</option>
 				<option value="deu">tedesco</option>
 				<option value="esp">spagnolo</option>
 				<option value="fra">francese</option>
 			</select>
-			<input type="file" id="file" class="button" accept="video/*"><input id="uploadBtn" type="button" value="Upload">
-
-			
+			<input type="file" id="file" class="button" accept="video/*" style="color: white;"><input id="uploadBtn" type="button" value="Upload">
 		</form>
 	</div>
+
+	<div id="myNav4" class="overlayLeft">
+		<!-- Button to close the overlay navigation -->
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav(4)">&times;</a>
+
+		<form id="myFilter" class="overlay-content">
+			<br>
+			<span>Purpose: </span>
+			<select name="purpose" id="Fpurp" class="custom-select">
+				<option value="what">what</option>
+				<option value="how">how</option>
+				<option value="why">why</option>
+			</select>
+			<br>
+			<span>Audience: </span>
+			<select name="audience" id="Faud" class="custom-select">
+				<option value="gen" selected>pubblico generico</option>
+				<option value="pre">pre-scuola</option>
+				<option value="elm">scuola primaria</option>
+				<option value="mid">scuola media</option>
+				<option value="scl">specialisti del settore</option>
+			</select>
+			<br>
+			<span>Lingua: </span>
+			<select name="language" id="Flang" class="custom-select">
+				<option value="ita">italiano</option>
+				<option value="eng">inglese</option>
+				<option value="deu">tedesco</option>
+				<option value="esp">spagnolo</option>
+				<option value="fra">francese</option>
+			</select>
+			<input id="filterBtn" type="button" value="Filter">
+		</form>
+	</div>
+
+
 	<div id="myNav3" class="overlayBottom">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav(3)">&times;</a>
-		<div class="overlay-content"> 		
-	
-			<iframe id="video" width="0px" height="0px" src="https://www.youtube.com/embed/Dzdg-0vldW4?rel=0&controls=0&showinfo=0&autoplay=1" allowscriptaccess="always" frameborder="0" allow='autoplay'></iframe>
-	
+		<div class="overlay-content">
+		<!--	<iframe id="video" width="0px" height="0px" src="https://www.youtube.com/embed/Dzdg-0vldW4?rel=0&controls=0&showinfo=0&autoplay=1" allowscriptaccess="always" frameborder="0" allow='autoplay'></iframe>
+		-->
+		<div id='video'></div>
 		</div>
 	</div>
 
@@ -161,8 +184,8 @@
 	</script>
 
 	<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
-	
-	<!-- jsCookie CDN -->    
+
+	<!-- jsCookie CDN -->
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
 	<!-- OLC CDN -->
@@ -177,8 +200,5 @@
 	<script src="static/js/jQuery.js"></script>
 	<script src="static/js/myMap.js"></script>
 	<script src="static/js/requests.js"></script>
-
-
-
 </body>
 </html>

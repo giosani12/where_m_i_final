@@ -285,6 +285,13 @@ li {
   }
 }
 
+/* for mobile */
+@media screen and (max-width: 800px) {
+	.leaflet-bottom {
+		bottom: 8vh;
+	}
+}
+
 select {
     -webkit-appearance: button;
     -moz-appearance: button;
@@ -324,37 +331,6 @@ select {
   color:#888;
 }
 
-
-
-/* Rating Star Widgets Style */
-.rating-stars ul {
-  list-style-type:none;
-  padding:0;
-
-  -moz-user-select:none;
-  -webkit-user-select:none;
-}
-.rating-stars ul > li.star {
-  display:inline-block;
-
-}
-
-/* Idle State of the stars */
-.rating-stars ul > li.star > i.fa {
-  font-size:2.5em; /* Change the size of the stars */
-  color:#ccc; /* Color on idle state */
-}
-
-/* Hover state of the stars */
-.rating-stars ul > li.star.hover > i.fa {
-  color:#FFCC36;
-}
-
-/* Selected state of the stars */
-.rating-stars ul > li.star.selected > i.fa {
-  color:#FF912C;
-}
-
 .wmiBtns {
   disabled: true;
 }
@@ -362,16 +338,17 @@ select {
 button[class*='easy-button-button'] {
 	margin: 0;
 	padding: 0;
-	display: inline-block;
+	display: flex;
 }
 
-button[class*='easy-button-button'] img{
-	width:80%;
-	height:80%;
+button[class*='easy-button-button'] img, button[class*='easy-button-button'] i{
+	width: 25px;
+	height: 25px;
 	vertical-align: middle;
 }
 
-button[class*='easy-button-button'] i{
+button[id*='wmi'] > span > p {
+	font-weight: bold;
 	vertical-align: middle;
 }
 
@@ -387,10 +364,23 @@ button[class*='easy-button-button'] i{
 	width: auto;
 	height: auto;
 }
-button[id*='wmi'] > span > p {
-	font-weight: bold;
-	vertical-align: middle;
-}
 
 #wmiLocate {
+}
+
+div[id*='myNav'], div[id*='myNav'] input, div[id*='myNav'] button {
+	font-size: 18px;
+}
+
+div[id*='myNav'] span {
+	color: white;
+	padding: 2px;
+}
+
+div[id*='myNav'] select {
+	margin: 5px;
+}
+
+#myNav1 video {
+	margin: 10px;
 }

@@ -17,9 +17,9 @@ function initClient() {
 	// Get API key and client ID from API Console.
 	// 'scope' field specifies spaaaaaace-delimited list of access scopes.
 	gapi.client.init({
-		'apiKey': 'AIzaSyA7yGFUELPysV0IxJb6g3jQgXjWc8q8TLI',/*'AIzaSyDFy8SQwqIlgOnKq8gmjt5vBpJ_C3VsW-M',*/
+		'apiKey': 'AIzaSyDRCcVYMqETRFZplLK1G5NsW0ku4RGpiQo',//'AIzaSyDGWHQGITr9m-5Jloq0dOhgChZwb3F-cQw',//'AIzaSyAUBKpMjcFMUCg6xRzcYvopYiPwpJW3beo', //'AIzaSyBWNNTZuOFBFF9AoSXP5GtvD9hIIQ1pv5Q',//'AIzaSyBFZvhhXt_okFT889UFUtVg2z-zK2n9mcM',///*'AIzaSyA7yGFUELPysV0IxJb6g3jQgXjWc8q8TLI',*/ /*'AIzaSyDFy8SQwqIlgOnKq8gmjt5vBpJ_C3VsW-M',*/ 'AIzaSyDbGrISqFN54ffWq2lmNVWbu4LC90oUzuI',
 		'discoveryDocs': [discoveryUrl],
-		'clientId': '798925527432-32vbin6ohfo4o9e0oevd41uhbitd83qe.apps.googleusercontent.com',/*'901602767451-peb56fj5v7psbcccjtt2bv8ffi3v368n.apps.googleusercontent.com',*/
+		'clientId': '653050367429-2ij7is59613jhomn59c401smucforlat.apps.googleusercontent.com',//'353017137119-cejbo7m75b4pibtd1e0truq1hpki0he3.apps.googleusercontent.com',//'324677598438-rctf0k11kje9ubtm2k8ufkameqdgdset.apps.googleusercontent.com', //'844966919292-hq9m6ktreeh2k1vcl180sj6ur8e9jgsi.apps.googleusercontent.com',//'524227378600-hsa7764rrum9vti5v0i7kppnkt93hg30.apps.googleusercontent.com',///*'798925527432-32vbin6ohfo4o9e0oevd41uhbitd83qe.apps.googleusercontent.com',*/ /*'901602767451-peb56fj5v7psbcccjtt2bv8ffi3v368n.apps.googleusercontent.com',*/ '850009237978-4k0mdcgn1qe1ijo6ihpglf83i4la0a1e.apps.googleusercontent.com',
 		'scope': SCOPES
 	}).then(function () {
 		GoogleAuth = gapi.auth2.getAuthInstance();
